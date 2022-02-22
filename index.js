@@ -60,7 +60,6 @@ todo_web.onload = () => {
     todo_web_content = todo_web.contentDocument || todo_web.contentWindow.document;
 }
 
-//TODO: need to move into a function for uplaod_file and save_file to make sure when index.html to todo.html transition did well
 let upload_file = document.getElementById("upload_todo_list");
 if (upload_file)
 	upload_file.addEventListener("click", uploadFile);
@@ -117,8 +116,7 @@ async function uploadFile()
 
 //save file
 async function saveFile()
-{	
-	//TODO: got some problems here as the file handle is gone when it comes to this page
+{
 	//save the data to previous uploaded file
 	if (!file_handle)
 	{
