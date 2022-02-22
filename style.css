@@ -1,7 +1,27 @@
 * {
-	font-family: "Tahoma", sans-serif;
+	/*font-family: "Trebuchet MS", sans-serif;*/
+	font-family: "Monaco", monospace;
+	
 	margin: 0;
 	word-wrap: break-word;
+	
+	/*https://www.canva.com/colors/color-palettes/rosettes-and-cream/*/
+	--dark-hot-pink: #EF7C8E;
+	--cream: #FAE8E0;
+	--spearmint: #B6E2D3;
+	--rosewater: #D8A7B1;
+	
+	/*https://www.canva.com/colors/color-palettes/pastel-dreams/*/
+	--yellow: #FBE7C6;
+	--mint: #B4F8C8;
+	--tiffany-blue: #A0E7E5;
+	--light-hot-pink: #FFAEBC;
+	
+	/*https://www.canva.com/colors/color-palettes/water-foam/*/
+	--mint2: #DDFFE7;
+	--spearmint2: #98D7C2;
+	--teal-green: #167D7F;
+	--teal: #29A0B1;
 }
 
 html {
@@ -15,5 +35,69 @@ html {
 body {
 	display: grid;
 	height: 100%;
-	grid-template-rows: 5% auto 3%;
+	grid-template-rows: 10% auto 5%;
+	background-color: var(--mint2);
+}
+
+header,footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--teal-green);
+	color: var(--spearmint2);
+	font-weight: bold;
+}
+
+header a {
+	color: inherit;
+	text-decoration: none;
+}
+
+#first_page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+
+#new_todo_list, #upload_todo_list{
+	border: none;
+	background: var(--teal-green);
+	color: var(--spearmint2);
+	font-weight: bold;
+	border-radius: 5px;
+	margin: 1% 0;
+	padding: 1% 2%;
+	cursor: pointer;
+}
+
+#upload_todo_list label {
+	cursor: pointer;
+}
+
+#upload_todo_list label:hover {
+	background: var(--teal);
+	color: var(--mint);
+}
+
+#new_todo_list:hover, #upload_todo_list:hover{
+	background: var(--teal);
+	color: var(--mint);
+}
+
+button {
+	border: none;
+	background: var(--teal-green);
+	color: var(--spearmint2);
+	font-weight: bold;
+	border-radius: 5px;
+	margin: 1% 0;
+	padding: 1% 2%;
+	cursor: pointer;
+}
+
+button:hover {
+	background: var(--teal);
+	color: var(--mint);
 }
