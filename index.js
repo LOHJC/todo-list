@@ -51,26 +51,22 @@ let fileOptions = {
 	]
 };
 
-//TODO: load todo.html into index.html
-// https://reactgo.com/get-element-from-iframe-javascript/
-// https://stackoverflow.com/questions/1088544/get-element-from-within-an-iframe
+//load todo.html into index.html
+//https://reactgo.com/get-element-from-iframe-javascript/
+//https://stackoverflow.com/questions/1088544/get-element-from-within-an-iframe
 let todo_web = document.getElementById("todo_iframe");
 let todo_web_content = "";
 todo_web.onload = () => {
     todo_web_content = todo_web.contentDocument || todo_web.contentWindow.document;
 }
 
-
+//TODO: need to move into a function for uplaod_file and save_file to make sure when index.html to todo.html transition did well
 let upload_file = document.getElementById("upload_todo_list");
 if (upload_file)
 	upload_file.addEventListener("click", uploadFile);
 
-let save_file = document.getElementById("save_file");
-if (save_file)
-	save_file.addEventListener("click", saveFile);
-
-//create new file
-function newToDoList()
+//go to todo.html
+function gotoToDoHTML(content)
 {
 	if (todo_web_content)
 	{
@@ -78,10 +74,27 @@ function newToDoList()
 		let index_footer = document.getElementsByTagName("footer")[0];
 		let index_section = document.getElementsByTagName("section")[0];
 		
+		if (content)
+		{
+			todo_web_content.getElementById("text_area").innerHTML = content;
+		}
+		
 		index_header.innerHTML = todo_web_content.getElementsByTagName("header")[0].innerHTML;
 		index_footer.innerHTML = todo_web_content.getElementsByTagName("footer")[0].innerHTML;
 		index_section.innerHTML = todo_web_content.getElementsByTagName("section")[0].innerHTML;
+		
+		//bind save button
+		let save_file = document.getElementById("save_file");
+		if (save_file)
+			save_file.addEventListener("click", saveFile);
 	}
+}
+
+
+//create new file
+function newToDoList()
+{
+	gotoToDoHTML();
 }
 
 //upload file
@@ -99,25 +112,12 @@ async function uploadFile()
 	document.getElementById("file_content").innerHTML = contents.replace(/(?:\r\n|\r|\n)/g, '<br>');
 	
 	//load the uploaded file data into text area
-	if (todo_web_content)
-	{
-		let index_header = document.getElementsByTagName("header")[0];
-		let index_footer = document.getElementsByTagName("footer")[0];
-		let index_section = document.getElementsByTagName("section")[0];
-		
-		todo_web_content.getElementById("text_area").innerHTML = contents;
-		
-		index_header.innerHTML = todo_web_content.getElementsByTagName("header")[0].innerHTML;
-		index_footer.innerHTML = todo_web_content.getElementsByTagName("footer")[0].innerHTML;
-		index_section.innerHTML = todo_web_content.getElementsByTagName("section")[0].innerHTML;
-	}
+	gotoToDoHTML(contents);
 }
 
 //save file
 async function saveFile()
-{
-	let content = "hello world";
-	
+{	
 	//TODO: got some problems here as the file handle is gone when it comes to this page
 	//save the data to previous uploaded file
 	if (!file_handle)
@@ -132,9 +132,10 @@ async function saveFile()
 			  },
 			],
 		  };
-		[file_handle] = await window.showSaveFilePicker(options);
+		file_handle = await window.showSaveFilePicker(options);
 	}
 	
+	let content = document.getElementById("text_area").value;
 	
 	let writable = await file_handle.createWritable();
 	await writable.write(content);
