@@ -51,6 +51,15 @@ let fileOptions = {
 	]
 };
 
+//TODO: load todo.html into index.html
+// https://reactgo.com/get-element-from-iframe-javascript/
+// https://stackoverflow.com/questions/1088544/get-element-from-within-an-iframe
+let todo_web = document.getElementById("todo_iframe");
+let todo_web_content = "";
+todo_web.onload = () => {
+    todo_web_content = todo_web.contentDocument || todo_web.contentWindow.document;
+}
+
 
 let upload_file = document.getElementById("upload_todo_list");
 if (upload_file)
@@ -60,15 +69,19 @@ let save_file = document.getElementById("save_file");
 if (save_file)
 	save_file.addEventListener("click", saveFile);
 
-let text_area = document.getElementById("text_area");
-if (text_area)
-	text_area.value = localStorage.getItem("todo_list");
-
 //create new file
 function newToDoList()
 {
-	localStorage.clear();
-	window.location.href = "todo.html";
+	if (todo_web_content)
+	{
+		let index_header = document.getElementsByTagName("header")[0];
+		let index_footer = document.getElementsByTagName("footer")[0];
+		let index_section = document.getElementsByTagName("section")[0];
+		
+		index_header.innerHTML = todo_web_content.getElementsByTagName("header")[0].innerHTML;
+		index_footer.innerHTML = todo_web_content.getElementsByTagName("footer")[0].innerHTML;
+		index_section.innerHTML = todo_web_content.getElementsByTagName("section")[0].innerHTML;
+	}
 }
 
 //upload file
@@ -82,12 +95,22 @@ async function uploadFile()
 	let file = await file_handle.getFile();
 	let contents = await file.text();
 	
-	localStorage.setItem("todo_list",contents);
-	localStorage.setItem("file_uploaded",true);
-	window.location.href = "todo.html"
-	
 	//TEST: show the text content in html
 	document.getElementById("file_content").innerHTML = contents.replace(/(?:\r\n|\r|\n)/g, '<br>');
+	
+	//load the uploaded file data into text area
+	if (todo_web_content)
+	{
+		let index_header = document.getElementsByTagName("header")[0];
+		let index_footer = document.getElementsByTagName("footer")[0];
+		let index_section = document.getElementsByTagName("section")[0];
+		
+		todo_web_content.getElementById("text_area").innerHTML = contents;
+		
+		index_header.innerHTML = todo_web_content.getElementsByTagName("header")[0].innerHTML;
+		index_footer.innerHTML = todo_web_content.getElementsByTagName("footer")[0].innerHTML;
+		index_section.innerHTML = todo_web_content.getElementsByTagName("section")[0].innerHTML;
+	}
 }
 
 //save file
