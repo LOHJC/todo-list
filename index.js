@@ -60,10 +60,6 @@ todo_web.onload = () => {
     todo_web_content = todo_web.contentDocument || todo_web.contentWindow.document;
 }
 
-let upload_file = document.getElementById("upload_todo_list");
-if (upload_file)
-	upload_file.addEventListener("click", uploadFile);
-
 //go to todo.html
 function gotoToDoHTML(content)
 {
@@ -98,6 +94,11 @@ function newToDoList()
 }
 
 //upload file
+function uploadFile()
+{
+	uploadFile();
+}
+
 async function uploadFile()
 {
 	[file_handle] = await window.showOpenFilePicker(fileOptions);
