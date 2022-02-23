@@ -94,11 +94,6 @@ function newToDoList()
 }
 
 //upload file
-function uploadFile()
-{
-	uploadFile();
-}
-
 async function uploadFile()
 {
 	[file_handle] = await window.showOpenFilePicker(fileOptions);
