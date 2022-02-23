@@ -22,6 +22,12 @@
 	--spearmint2: #98D7C2;
 	--teal-green: #167D7F;
 	--teal: #29A0B1;
+	
+	/*from canva too*/
+	--light-orange: #FFD898;
+	--dark-orange: #FFC680;
+	--neon-green: #A3EBB1;
+	--kelly-green: #B1D8B7;
 }
 
 html {
@@ -31,6 +37,70 @@ html {
 .text-center {
 	text-align: center;
 }
+
+input {
+	border: none;
+}
+
+/*width > height*/
+@media screen and (orientation:landscape) {
+	header {
+		font-size: 3.5vh;
+	}
+	
+	header button, header div {
+		font-size: 3vh;
+	}
+	
+	footer {
+		font-size: 2.5vh;
+	}
+	
+	.main_todo_item, .main_working_item, .main_done_item {
+		height: 3vh;
+		border-radius: 1vh;
+		padding: 1vh 0;
+		margin: 1vh 0;
+	}
+	
+	.sub_todo_item, .sub_working_item, .sub_done_item {
+		height: 3vh;
+		border-radius: 1vh;
+		padding: 1vh 0;
+		margin: 1vh 0;
+	}
+}
+
+/*height > width*/
+@media screen and (orientation:portrait) {
+	header {
+		font-size: 7vw;
+	}
+	
+	header button, header div {
+		font-size: 3vw;
+	}
+	
+	footer {
+		font-size: 2.5vw;
+	}	
+	
+	.main_todo_item, .main_working_item, .main_done_item {
+		height: 3vw;
+		border-radius: 1vw;
+		padding: 1vw 0;
+		margin: 1vw 0;
+	}
+	
+	.sub_todo_item, .sub_working_item, .sub_done_item {
+		height: 3vw;
+		border-radius: 1vw;
+		padding: 1vw 0;
+		margin: 1vw 0;
+	}
+}
+
+
 
 body {
 	display: grid;
@@ -65,7 +135,7 @@ header a:hover, footer a:hover {
 	height: 100%;
 }
 
-#new_todo_list, #upload_todo_list{
+.content_button {
 	border: none;
 	background: var(--teal-green);
 	color: var(--spearmint2);
@@ -76,16 +146,16 @@ header a:hover, footer a:hover {
 	cursor: pointer;
 }
 
-#upload_todo_list label {
+.content_button label {
 	cursor: pointer;
 }
 
-#upload_todo_list label:hover {
+.content_button label:hover {
 	background: var(--teal);
 	color: var(--mint);
 }
 
-#new_todo_list:hover, #upload_todo_list:hover{
+.content_button:hover{
 	background: var(--teal);
 	color: var(--mint);
 }
@@ -105,3 +175,76 @@ button:hover {
 	background: var(--teal);
 	color: var(--mint);
 }
+
+#todo_menu {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 60% 10% auto;
+	align-items: center;
+}
+
+#todo_mainmenu{
+	display: flex;
+	justify-content: flex_start;
+	padding: 0 2%;
+}
+
+#todo_submenu {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+#todo_list {
+	width: 100%;
+	height: 100%;
+	display: grid;
+	grid-template-columns: auto auto auto;
+	align-items: center;
+}
+
+#todo_div, #working_div, #done_div{
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex_start;
+}
+
+#todo_items, #working_items, #done_items {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex_start;
+}
+
+.main_todo_item,  .main_working_item, .main_done_item {
+	width: 90%;
+}
+.sub_todo_item, .sub_working_item, .sub_done_item {
+	width: 80%;
+}
+
+.main_todo_item {
+	background-color: var(--tiffany-blue);
+}
+
+.sub_todo_item {
+	background-color: var(--spearmint);
+}
+
+.main_working_item {
+	background-color: var(--light-orange);
+}
+.sub_working_item {
+	background-color: var(--dark-orange);
+}
+.main_done_item {
+	background-color: var(--neon-green);
+}
+.sub_done_item {
+	background-color: var(--kelly-green);
+}
+
+/*TODO: useful link for dynamic font https://css-tricks.com/snippets/css/fluid-typography/ */

@@ -43,7 +43,7 @@ let fileOptions = {
 		{
 			description: "TODOLOH",
 			accept: {
-				"text/plain": [".todoloh"]
+				"text/markdown": [".todoloh", ".md"]
 			},
 			excludeAcceptAllOption: true,
 			multiple: false
@@ -75,7 +75,8 @@ function gotoToDoHTML(content)
 		
 		if (content)
 		{
-			todo_web_content.getElementById("text_area").innerHTML = content;
+			//TODO: need to check if the uploaded file is normal todo list
+			//todo_web_content.getElementById("text_area").innerHTML = content;
 		}
 		
 		index_header.innerHTML = todo_web_content.getElementsByTagName("header")[0].innerHTML;
@@ -107,9 +108,6 @@ async function uploadFile()
 	let file = await file_handle.getFile();
 	let contents = await file.text();
 	
-	//TEST: show the text content in html
-	document.getElementById("file_content").innerHTML = contents.replace(/(?:\r\n|\r|\n)/g, '<br>');
-	
 	//load the uploaded file data into text area
 	gotoToDoHTML(contents);
 }
@@ -125,7 +123,7 @@ async function saveFile()
 			{
 				description: "TODOLOH",
 				accept: {
-				  "text/plain": [".todoloh"],
+				  "text/markdown": [".todoloh", ".md"],
 				},
 			  },
 			],
@@ -133,7 +131,9 @@ async function saveFile()
 		file_handle = await window.showSaveFilePicker(options);
 	}
 	
-	let content = document.getElementById("text_area").value;
+	
+	//TODO: write the content into file
+	//let content = document.getElementById("text_area").value;
 	
 	let writable = await file_handle.createWritable();
 	await writable.write(content);
