@@ -105,7 +105,7 @@ input {
 body {
 	display: grid;
 	height: 100%;
-	grid-template-rows: 10% auto 5%;
+	grid-template-rows: 10% 85% 5%;
 	background-color: var(--mint2);
 }
 
@@ -197,20 +197,27 @@ button:hover {
 }
 
 #todo_list {
-	max-width: 100%;
-	max-height: 100%;
+	height: 100%;
 	display: grid;
-	grid-template-columns: auto auto auto;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr;
 	align-items: center;
 }
 
 #todo_div, #working_div, #done_div{
-	height: 100%;	
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	flex: 1;
+	overflow-y: auto;
 }
 
+/*
 #todo_items, #working_items, #done_items {
-	height: 100%;
 }
+*/
 
 .main_todo_item,  .main_working_item, .main_done_item {
 	width: 90%;
@@ -221,6 +228,10 @@ button:hover {
 
 .item {
 	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
 .main_todo_item {
