@@ -57,17 +57,30 @@ input {
 	}
 	
 	.main_todo_item, .main_working_item, .main_done_item {
-		height: 3vh;
+		min-height: 3vh;
 		border-radius: 1vh;
 		padding: 1vh 0;
 		margin: 1vh 0;
 	}
 	
 	.sub_todo_item, .sub_working_item, .sub_done_item {
-		height: 3vh;
+		min-height: 3vh;
 		border-radius: 1vh;
 		padding: 1vh 0;
 		margin: 1vh 0;
+	}
+	
+	::-webkit-scrollbar {
+		width: 1.5vh;
+	}
+	
+	::-webkit-scrollbar-thumb {
+		border-radius: 1.5vh;
+	}
+	
+	::-webkit-scrollbar-button {
+		visibility: hidden;
+		height: 0.5vh;
 	}
 }
 
@@ -86,21 +99,33 @@ input {
 	}	
 	
 	.main_todo_item, .main_working_item, .main_done_item {
-		height: 3vw;
+		min-height: 3vw;
 		border-radius: 1vw;
 		padding: 1vw 0;
 		margin: 1vw 0;
 	}
 	
 	.sub_todo_item, .sub_working_item, .sub_done_item {
-		height: 3vw;
+		min-height: 3vw;
 		border-radius: 1vw;
 		padding: 1vw 0;
 		margin: 1vw 0;
 	}
+	
+	::-webkit-scrollbar {
+		width: 1.5vw;
+		padding: 1.5vw 0;
+	}
+	
+	::-webkit-scrollbar-thumb {
+		border-radius: 1.5vw;
+	}
+	
+	::-webkit-scrollbar-button {
+		visibility: hidden;
+		height: 0.5vw;
+	}
 }
-
-
 
 body {
 	display: grid;
@@ -179,7 +204,7 @@ button:hover {
 #todo_menu {
 	width: 100%;
 	display: grid;
-	grid-template-columns: 60% 10% auto;
+	grid-template-columns: 60% 10% 30%;
 	align-items: center;
 }
 
@@ -210,10 +235,23 @@ button:hover {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	flex: 1;
 	overflow-y: auto;
 }
 
+/* https://developer.mozilla.org/zh-CN/docs/Web/CSS/::-webkit-scrollbar */
+/* https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_scrollbar */
+
+#todo_div::-webkit-scrollbar-thumb {
+	background-color: var(--spearmint);
+}
+
+#working_div::-webkit-scrollbar-thumb {
+	background-color: var(--dark-orange);
+}
+
+#done_div::-webkit-scrollbar-thumb {
+	background-color: var(--kelly-green);
+}
 /*
 #todo_items, #working_items, #done_items {
 }
@@ -221,9 +259,11 @@ button:hover {
 
 .main_todo_item,  .main_working_item, .main_done_item {
 	width: 90%;
+	height: 100%;
 }
 .sub_todo_item, .sub_working_item, .sub_done_item {
 	width: 80%;
+	height: 100%;
 }
 
 .item {
