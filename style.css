@@ -38,8 +38,13 @@ html {
 	text-align: center;
 }
 
-input {
-	border: none;
+.textarea {
+	width: 100%;
+}
+
+[contenteditable]
+{
+	outline: transparent;
 }
 
 /*width > height*/
@@ -68,6 +73,10 @@ input {
 		border-radius: 1vh;
 		padding: 1vh 0;
 		margin: 1vh 0;
+	}
+	
+	.textarea {
+		min-height: 3vh;
 	}
 	
 	::-webkit-scrollbar {
@@ -110,6 +119,10 @@ input {
 		border-radius: 1vw;
 		padding: 1vw 0;
 		margin: 1vw 0;
+	}
+	
+	.textarea {
+		min-height: 3vw;
 	}
 	
 	::-webkit-scrollbar {
@@ -260,10 +273,18 @@ button:hover {
 .main_todo_item,  .main_working_item, .main_done_item {
 	width: 90%;
 	height: 100%;
+	display: grid;
+	grid-template-columns: 60% 10% 10%;
+	align-items: center;
+	justify-content: space-around;
 }
 .sub_todo_item, .sub_working_item, .sub_done_item {
 	width: 80%;
 	height: 100%;
+	display: grid;
+	grid-template-columns: 10% 70%;
+	align-items: center;
+	justify-content: space-around;
 }
 
 .item {

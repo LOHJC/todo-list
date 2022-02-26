@@ -39,30 +39,182 @@ function gotoToDoHTML(content)
 		let index_footer = document.getElementsByTagName("footer")[0];
 		let index_section = document.getElementsByTagName("section")[0];
 		
+		index_header.innerHTML = todo_web_content.getElementsByTagName("header")[0].innerHTML;
+		index_footer.innerHTML = todo_web_content.getElementsByTagName("footer")[0].innerHTML;
+		index_section.innerHTML = todo_web_content.getElementsByTagName("section")[0].innerHTML;
+		
 		if (content)
 		{
-			//TODO: need to check if the uploaded file is normal todo list
+			//check if the uploaded file is normal todo list
 			let item = new Item();
 			let parts = content.split("\r\n\r\n")
 			if (parts.length == 3)
 			{
-				//get the todo array
+				//set the todo array
 				setToDoArray(parts[0]);
 				console.log(todo_array);
 				
-				//get the working array
+				//set the working array
 				setWorkingArray(parts[1]);
 				console.log(working_array);
 				
-				//get the done array
+				//set the done array
 				setDoneArray(parts[2]);
 				console.log(done_array);
+				
+				//TODO: show the uploaded todo list
+				if (todo_array.length != 0 || working_array.length != 0 || done_array.length != 0)
+				{
+					//todo
+					let items = document.getElementById("todo_items");
+					items.innerHTML = "";
+					
+					for (let i=0; i < todo_array.length; i++)
+					{
+						let item = document.createElement("div");
+						item.classList.add("item");
+						item.setAttribute("draggable",true);
+						
+						let main_item = document.createElement("div");
+						main_item.classList.add("main_todo_item");
+						let main_input = document.createElement("div");
+						main_input.classList.add("textarea");
+						main_input.contentEditable = true;
+						main_input.spellcheck = false;
+						main_input.innerHTML = todo_array[i].main;
+						let delete_icon = document.createElement("div");
+						delete_icon.innerHTML = "delete";
+						let dropdown_icon = document.createElement("div");
+						dropdown_icon.innerHTML = "dropdown";
+						main_item.appendChild(main_input);
+						main_item.appendChild(delete_icon);
+						main_item.appendChild(dropdown_icon);
+						item.appendChild(main_item);
+						
+						for (let j=0; j < todo_array[0].sub.length; j++)
+						{
+							let sub_item = document.createElement("div");
+							sub_item.classList.add("sub_todo_item");
+							let checkbox_div = document.createElement("div");
+							let checkbox_input = document.createElement("input");
+							let checkbox_tick =  todo_array[i].sub[j].split(",")[1];
+							checkbox_input.type = "checkbox";
+							if (checkbox_tick == "Y")
+								checkbox_input.checked = true;
+							else if (checkbox_tick == "N")
+								checkbox_input.checked = false;
+							checkbox_div.appendChild(checkbox_input);
+							let sub_input = document.createElement("div");
+							sub_input.classList.add("textarea");
+							sub_input.contentEditable = true;
+							sub_input.spellcheck = false;
+							let sub_content = todo_array[i].sub[j].split(",")[0];
+							sub_input.innerHTML = sub_content;
+							sub_item.appendChild(checkbox_div);	
+							sub_item.appendChild(sub_input);
+							item.appendChild(sub_item);
+						}
+						
+						items.appendChild(item);
+					}
+					
+					//working
+					items = document.getElementById("working_items");
+					items.innerHTML = "";
+					
+					for (let i=0; i < working_array.length; i++)
+					{
+						let item = document.createElement("div");
+						item.classList.add("item");
+						item.setAttribute("draggable",true);
+						
+						let main_item = document.createElement("div");
+						main_item.classList.add("main_working_item");
+						let main_input = document.createElement("div");
+						main_input.classList.add("textarea");
+						main_input.contentEditable = true;
+						main_input.spellcheck = false;
+						main_input.innerHTML = working_array[i].main;
+						let delete_icon = document.createElement("div");
+						delete_icon.innerHTML = "delete";
+						let dropdown_icon = document.createElement("div");
+						dropdown_icon.innerHTML = "dropdown";
+						main_item.appendChild(main_input);
+						main_item.appendChild(delete_icon);
+						main_item.appendChild(dropdown_icon);
+						item.appendChild(main_item);
+						
+						for (let j=0; j < working_array[0].sub.length; j++)
+						{
+							let sub_item = document.createElement("div");
+							sub_item.classList.add("sub_working_item");
+							let checkbox_div = document.createElement("div");
+							let checkbox_input = document.createElement("input");
+							checkbox_input.type = "checkbox";
+							checkbox_div.appendChild(checkbox_input);
+							let sub_input = document.createElement("div");
+							sub_input.classList.add("textarea");
+							sub_input.contentEditable = true;
+							sub_input.spellcheck = false;
+							sub_input.innerHTML = working_array[i].sub[j];
+							sub_item.appendChild(checkbox_div);	
+							sub_item.appendChild(sub_input);
+							item.appendChild(sub_item);
+						}
+						
+						items.appendChild(item);
+					}
+					
+					//done
+					items = document.getElementById("done_items");
+					items.innerHTML = "";
+					
+					for (let i=0; i < done_array.length; i++)
+					{
+						let item = document.createElement("div");
+						item.classList.add("item");
+						item.setAttribute("draggable",true);
+						
+						let main_item = document.createElement("div");
+						main_item.classList.add("main_done_item");
+						let main_input = document.createElement("div");
+						main_input.classList.add("textarea");
+						main_input.contentEditable = true;
+						main_input.spellcheck = false;
+						main_input.innerHTML = done_array[i].main;
+						let delete_icon = document.createElement("div");
+						delete_icon.innerHTML = "delete";
+						let dropdown_icon = document.createElement("div");
+						dropdown_icon.innerHTML = "dropdown";
+						main_item.appendChild(main_input);
+						main_item.appendChild(delete_icon);
+						main_item.appendChild(dropdown_icon);
+						item.appendChild(main_item);
+						
+						for (let j=0; j < done_array[0].sub.length; j++)
+						{
+							let sub_item = document.createElement("div");
+							sub_item.classList.add("sub_done_item");
+							let checkbox_div = document.createElement("div");
+							let checkbox_input = document.createElement("input");
+							checkbox_input.type = "checkbox";
+							checkbox_div.appendChild(checkbox_input);
+							let sub_input = document.createElement("div");
+							sub_input.classList.add("textarea");
+							sub_input.contentEditable = true;
+							sub_input.spellcheck = false;
+							sub_input.innerHTML = done_array[i].sub[j];
+							sub_item.appendChild(checkbox_div);	
+							sub_item.appendChild(sub_input);
+							item.appendChild(sub_item);
+						}
+						
+						items.appendChild(item);
+					}
+					
+				}
 			}
 		}
-		
-		index_header.innerHTML = todo_web_content.getElementsByTagName("header")[0].innerHTML;
-		index_footer.innerHTML = todo_web_content.getElementsByTagName("footer")[0].innerHTML;
-		index_section.innerHTML = todo_web_content.getElementsByTagName("section")[0].innerHTML;
 		
 		//bind save button
 		let save_file = document.getElementById("save_file");
@@ -114,6 +266,7 @@ async function saveFile()
 	
 	//TODO: write the content into file
 	//let content = document.getElementById("text_area").value;
+	
 	
 	let writable = await file_handle.createWritable();
 	await writable.write(content);

@@ -1,15 +1,15 @@
 ## TODO
 - todo
-    - todo 1
-    - todo 2
+    - todo 1,Y
+    - todo 2,N
 - todo new
- - todo new 1
- - todo new 2
+    - todo new 1,N
+    - todo new 2,N
 
 ## WORKING
 - Working on something
 
 ## DONE
 - Dinner
-    - Cook
-    - Wash Dishes
+    - Cook,Y
+    - Wash Dishes,N
