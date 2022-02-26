@@ -31,7 +31,7 @@ todo_web.onload = () => {
 }
 
 //go to todo.html
-function gotoToDoHTML(content)
+function gotoToDoHTML(filename, content)
 {
 	if (todo_web_content)
 	{
@@ -43,7 +43,7 @@ function gotoToDoHTML(content)
 		index_footer.innerHTML = todo_web_content.getElementsByTagName("footer")[0].innerHTML;
 		index_section.innerHTML = todo_web_content.getElementsByTagName("section")[0].innerHTML;
 		
-		if (content)
+		if (filename && content)
 		{
 			//check if the uploaded file is normal todo list
 			let item = new Item();
@@ -62,9 +62,14 @@ function gotoToDoHTML(content)
 				setDoneArray(parts[2]);
 				console.log(done_array);
 				
-				//TODO: show the uploaded todo list
+				//show the uploaded todo list
 				if (todo_array.length != 0 || working_array.length != 0 || done_array.length != 0)
 				{
+					//set the file name
+					let todo_filename = document.getElementById("todo_filename")
+					todo_filename.innerHTML = filename.replace(".todoloh","").replace(".md","");
+					todo_filename.contentEditable = false;
+					
 					//todo
 					let items = document.getElementById("todo_items");
 					items.innerHTML = "";
@@ -238,10 +243,11 @@ async function uploadFile()
 		return;
 	
 	let file = await file_handle.getFile();
+	let filename = file.name;
 	let contents = await file.text();
 	
 	//load the uploaded file data into text area
-	gotoToDoHTML(contents);
+	gotoToDoHTML(filename, contents);
 }
 
 //save file

@@ -222,9 +222,20 @@ button:hover {
 }
 
 #todo_mainmenu{
+	height: 100%;
 	display: flex;
-	justify-content: flex_start;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	padding: 0 2%;
+}
+
+#todo_filename 
+{
+	/*60% of the header is for input, 2% is the padding*/
+	inline-size: calc(60vw - 2vw); 
+	word-wrap: break-word;
+	/*background-color: white;*/
 }
 
 #todo_submenu {
