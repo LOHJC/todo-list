@@ -101,12 +101,9 @@ function gotoToDoHTML(filename, content)
 						main_input.spellcheck = false;
 						main_input.innerHTML = todo_array[i].main;
 						let delete_icon = document.createElement("div");
-						delete_icon.id = "delete_todo_item";
-						let dropdown_icon = document.createElement("div");
-						dropdown_icon.id = "pulldrop";
+						delete_icon.classList.add("delete_item");
 						main_item.appendChild(main_input);
 						main_item.appendChild(delete_icon);
-						main_item.appendChild(dropdown_icon);
 						item.appendChild(main_item);
 						
 						for (let j=0; j < todo_array[0].sub.length; j++)
@@ -128,8 +125,11 @@ function gotoToDoHTML(filename, content)
 							sub_input.spellcheck = false;
 							let sub_content = todo_array[i].sub[j].split(",")[0];
 							sub_input.innerHTML = sub_content;
+							let delete_icon = document.createElement("div");
+							delete_icon.classList.add("delete_item");
 							sub_item.appendChild(checkbox_div);	
 							sub_item.appendChild(sub_input);
+							sub_item.appendChild(delete_icon);
 							item.appendChild(sub_item);
 						}
 						
@@ -154,12 +154,9 @@ function gotoToDoHTML(filename, content)
 						main_input.spellcheck = false;
 						main_input.innerHTML = working_array[i].main;
 						let delete_icon = document.createElement("div");
-						delete_icon.innerHTML = "delete";
-						let dropdown_icon = document.createElement("div");
-						dropdown_icon.innerHTML = "dropdown";
+						delete_icon.classList.add("delete_item");
 						main_item.appendChild(main_input);
 						main_item.appendChild(delete_icon);
-						main_item.appendChild(dropdown_icon);
 						item.appendChild(main_item);
 						
 						for (let j=0; j < working_array[0].sub.length; j++)
@@ -168,15 +165,23 @@ function gotoToDoHTML(filename, content)
 							sub_item.classList.add("sub_working_item");
 							let checkbox_div = document.createElement("div");
 							let checkbox_input = document.createElement("input");
+							let checkbox_tick =  working_array[i].sub[j].split(",")[1];
 							checkbox_input.type = "checkbox";
+							if (checkbox_tick == "Y")
+								checkbox_input.checked = true;
+							else if (checkbox_tick == "N")
+								checkbox_input.checked = false;
 							checkbox_div.appendChild(checkbox_input);
 							let sub_input = document.createElement("div");
 							sub_input.classList.add("textarea");
 							sub_input.contentEditable = true;
 							sub_input.spellcheck = false;
-							sub_input.innerHTML = working_array[i].sub[j];
+							sub_input.innerHTML = working_array[i].sub[j].split(",")[0];
+							let delete_icon = document.createElement("div");
+							delete_icon.classList.add("delete_item");
 							sub_item.appendChild(checkbox_div);	
 							sub_item.appendChild(sub_input);
+							sub_item.appendChild(delete_icon);
 							item.appendChild(sub_item);
 						}
 						
@@ -201,12 +206,9 @@ function gotoToDoHTML(filename, content)
 						main_input.spellcheck = false;
 						main_input.innerHTML = done_array[i].main;
 						let delete_icon = document.createElement("div");
-						delete_icon.innerHTML = "delete";
-						let dropdown_icon = document.createElement("div");
-						dropdown_icon.innerHTML = "dropdown";
+						delete_icon.classList.add("delete_item");
 						main_item.appendChild(main_input);
 						main_item.appendChild(delete_icon);
-						main_item.appendChild(dropdown_icon);
 						item.appendChild(main_item);
 						
 						for (let j=0; j < done_array[0].sub.length; j++)
@@ -215,15 +217,23 @@ function gotoToDoHTML(filename, content)
 							sub_item.classList.add("sub_done_item");
 							let checkbox_div = document.createElement("div");
 							let checkbox_input = document.createElement("input");
+							let checkbox_tick =  done_array[i].sub[j].split(",")[1];
 							checkbox_input.type = "checkbox";
+							if (checkbox_tick == "Y")
+								checkbox_input.checked = true;
+							else if (checkbox_tick == "N")
+								checkbox_input.checked = false;
 							checkbox_div.appendChild(checkbox_input);
 							let sub_input = document.createElement("div");
 							sub_input.classList.add("textarea");
 							sub_input.contentEditable = true;
 							sub_input.spellcheck = false;
-							sub_input.innerHTML = done_array[i].sub[j];
+							sub_input.innerHTML = done_array[i].sub[j].split(",")[0];
+							let delete_icon = document.createElement("div");
+							delete_icon.classList.add("delete_item");
 							sub_item.appendChild(checkbox_div);	
 							sub_item.appendChild(sub_input);
+							sub_item.appendChild(delete_icon);
 							item.appendChild(sub_item);
 						}
 						

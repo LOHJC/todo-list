@@ -84,7 +84,9 @@ html {
 		height: 4.5vh;
 	}
 	
-	#delete_todo_item, #pulldrop{
+	.delete_item, #pulldrop{
+		height: 3vh;
+		width: 3vh;
 		background-size: 3vh 3vh;
 	}
 	
@@ -145,7 +147,9 @@ html {
 		height: 4.5vw;
 	}
 	
-	#delete_todo_item, #pulldrop {
+	.delete_item, #pulldrop {
+		height: 3vw;
+		width: 3vw;
 		background-size: 3vw 3vw;
 	}
 	
@@ -315,7 +319,7 @@ button:hover {
 	width: 90%;
 	height: 100%;
 	display: grid;
-	grid-template-columns: 60% 10% 10%;
+	grid-template-columns: 70% 10%;
 	align-items: center;
 	justify-content: space-around;
 }
@@ -323,7 +327,7 @@ button:hover {
 	width: 80%;
 	height: 100%;
 	display: grid;
-	grid-template-columns: 5% 80%;
+	grid-template-columns: 5% 65% 10%;
 	align-items: center;
 	justify-content: space-around;
 }
@@ -357,7 +361,7 @@ button:hover {
 	background-color: var(--kelly-green);
 }
 
-#add_todo_items {
+#add_items {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	justify-content: space-around;
@@ -367,7 +371,7 @@ button:hover {
 	margin: auto;
     border-radius: 50%;
 	background-size: 50% 50%;
-	opacity: 0.5;
+	opacity: 0.8;
 	cursor: pointer;
 }
 
@@ -389,9 +393,35 @@ button:hover {
 	background-position: center;
 }
 
-#delete_todo_item {
-	height: 100%;
-	width: 100%;
+#add_main_working_item{
+	background-color: var(--light-orange);
+	background-image: url("add.png");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#add_sub_working_item {
+	background-color: var(--dark-orange);
+	background-image: url("add.png");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#add_main_done_item{
+	background-color: var(--neon-green);
+	background-image: url("add.png");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#add_sub_done_item {
+	background-color: var(--kelly-green);
+	background-image: url("add.png");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.delete_item {
 	background-image: url("delete.png");
 	background-repeat: no-repeat;
 	background-position: center;
@@ -399,7 +429,7 @@ button:hover {
 	cursor: pointer;
 }
 
-#delete_todo_item:hover {
+.delete_item:hover {
 	opacity: 1;
 }
 
