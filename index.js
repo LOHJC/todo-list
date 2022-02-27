@@ -65,15 +65,15 @@ function gotoToDoHTML(filename, content)
 			{
 				//set the todo array
 				setToDoArray(parts[0]);
-				console.log(todo_array);
+				//console.log(todo_array);
 				
 				//set the working array
 				setWorkingArray(parts[1]);
-				console.log(working_array);
+				//console.log(working_array);
 				
 				//set the done array
 				setDoneArray(parts[2]);
-				console.log(done_array);
+				//console.log(done_array);
 				
 				//show the uploaded todo list
 				if (todo_array.length != 0 || working_array.length != 0 || done_array.length != 0)
@@ -476,3 +476,69 @@ function setDoneArray(done_content)
 		}
 	}
 }
+
+function addMainToDoItem()
+{
+	let new_item = new Item();
+	new_item.main = "New Todo";
+	
+	let items = document.getElementById("todo_items");
+	let item = document.createElement("div");
+	item.classList.add("item");
+	item.setAttribute("draggable",true);
+						
+	let main_item = document.createElement("div");
+	main_item.classList.add("main_todo_item");
+	let main_input = document.createElement("div");
+	main_input.classList.add("textarea");
+	main_input.contentEditable = true;
+	main_input.spellcheck = false;
+	main_input.innerHTML = new_item.main;
+	let delete_icon = document.createElement("div");
+	delete_icon.classList.add("delete_item");
+	main_item.appendChild(main_input);
+	main_item.appendChild(delete_icon);
+	item.appendChild(main_item);
+	items.appendChild(item);
+	
+	todo_array.push(new_item);
+}
+
+function addSubToDoItem()
+{
+	if (todo_array.length <= 0)
+		return;
+	
+	let last_item = todo_array[todo_array.length - 1];
+	last_item.sub.push("New Todo,N");
+	
+	let last_item_div = document.getElementById("todo_items").getElementsByClassName("item");
+	last_item_div = last_item_div[last_item_div.length - 1];
+	
+	let sub_item = document.createElement("div");
+	sub_item.classList.add("sub_todo_item");
+	let checkbox_div = document.createElement("div");
+	let checkbox_input = document.createElement("input");
+	let checkbox_tick =  last_item.sub[last_item.sub.length -1].split(",")[1];
+	checkbox_input.type = "checkbox";
+	if (checkbox_tick == "Y")
+		checkbox_input.checked = true;
+	else if (checkbox_tick == "N")
+		checkbox_input.checked = false;
+	checkbox_div.appendChild(checkbox_input);
+	let sub_input = document.createElement("div");
+	sub_input.classList.add("textarea");
+	sub_input.contentEditable = true;
+	sub_input.spellcheck = false;
+	let sub_content = last_item.sub[last_item.sub.length -1].split(",")[0];
+	sub_input.innerHTML = sub_content;
+	let delete_icon = document.createElement("div");
+	delete_icon.classList.add("delete_item");
+	sub_item.appendChild(checkbox_div);	
+	sub_item.appendChild(sub_input);
+	sub_item.appendChild(delete_icon);
+	last_item_div.appendChild(sub_item);
+	
+}
+
+
