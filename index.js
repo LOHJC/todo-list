@@ -88,9 +88,9 @@ function gotoToDoHTML(filename, content)
 						main_input.spellcheck = false;
 						main_input.innerHTML = todo_array[i].main;
 						let delete_icon = document.createElement("div");
-						delete_icon.innerHTML = "delete";
+						delete_icon.id = "delete_todo_item";
 						let dropdown_icon = document.createElement("div");
-						dropdown_icon.innerHTML = "dropdown";
+						dropdown_icon.id = "pulldrop";
 						main_item.appendChild(main_input);
 						main_item.appendChild(delete_icon);
 						main_item.appendChild(dropdown_icon);

@@ -84,8 +84,14 @@ html {
 		height: 4.5vh;
 	}
 	
-	#delete_todo_item, #pulldrop {
+	#delete_todo_item, #pulldrop{
 		background-size: 3vh 3vh;
+	}
+	
+	#home_button {
+		height: 4vh;
+		width: 4vh;
+		background-size: 4vh 4vh;
 	}
 	
 	::-webkit-scrollbar {
@@ -141,6 +147,12 @@ html {
 	
 	#delete_todo_item, #pulldrop {
 		background-size: 3vw 3vw;
+	}
+	
+	#home_button {
+		height: 4vw;
+		width: 4vw;
+		background-size: 4vw 4vw;
 	}
 	
 	::-webkit-scrollbar {
@@ -405,5 +417,10 @@ button:hover {
 	opacity: 1;
 }
 
+#home_button {
+	background-image: url("home.png");
+	background-repeat: no-repeat;
+	background-position: center;
+}
 
 /*useful link for dynamic font https://css-tricks.com/snippets/css/fluid-typography/ */
