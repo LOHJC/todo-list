@@ -338,7 +338,7 @@ class Item
 	}
 }
 
-
+//TODO: update design to latest one (buttons, and add id to divs, and add onclicks)
 function setToDoArray(todo_content)
 {
 	if (todo_content.substring(0,9) == "## TODO\r\n")
@@ -385,6 +385,7 @@ function setToDoArray(todo_content)
 	}
 }
 
+//TODO: update design to latest one (buttons, and add id to divs, and add onclicks)
 function setWorkingArray(working_content)
 {
 	if (working_content.substring(0,12) == "## WORKING\r\n")
@@ -431,6 +432,7 @@ function setWorkingArray(working_content)
 	}
 }
 
+//TODO: update design to latest one (buttons, and add id to divs, and add onclicks)
 function setDoneArray(done_content)
 {
 	if (done_content.substring(0,9) == "## DONE\r\n")
@@ -498,53 +500,226 @@ function addMainToDoItem()
 	let delete_icon = document.createElement("div");
 	delete_icon.classList.add("delete_item");
 	delete_icon.onclick = () => {deleteItem("main_todo_item_" + new_item.id)};
+	let add_sub_item_button = document.createElement("div");
+	add_sub_item_button.classList.add("round_button");
+	add_sub_item_button.classList.add("add_sub_todo_item");
+	add_sub_item_button.onclick = () => {addSubToDoItem("main_todo_item_" + new_item.id)};
 	main_item.appendChild(main_input);
 	main_item.appendChild(delete_icon);
 	item.appendChild(main_item);
+	item.appendChild(add_sub_item_button);
 	items.appendChild(item);
 	
 	todo_array.push(new_item);
 }
 
-function addSubToDoItem()
+function addMainWorkingItem()
 {
-	if (todo_array.length <= 0)
-		return;
+	let new_item = new Item();
+	new_item.main = "New Working";
 	
-	let last_item = todo_array[todo_array.length - 1];
-	last_item.sub.push("New Todo,N");
-	
-	let last_item_div = document.getElementById("todo_items").getElementsByClassName("item");
-	last_item_div = last_item_div[last_item_div.length - 1];
-	
-	let sub_item = document.createElement("div");
-	sub_item.classList.add("sub_todo_item");
-	sub_item.id = "sub_todo_item_" + last_item.id + "_" + (last_item.sub.length - 1);
-	let checkbox_div = document.createElement("div");
-	let checkbox_input = document.createElement("input");
-	let checkbox_tick =  last_item.sub[last_item.sub.length -1].split(",")[1];
-	checkbox_input.type = "checkbox";
-	if (checkbox_tick == "Y")
-		checkbox_input.checked = true;
-	else if (checkbox_tick == "N")
-		checkbox_input.checked = false;
-	checkbox_div.appendChild(checkbox_input);
-	let sub_input = document.createElement("div");
-	sub_input.classList.add("textarea");
-	sub_input.contentEditable = true;
-	sub_input.spellcheck = false;
-	let sub_content = last_item.sub[last_item.sub.length - 1].split(",")[0];
-	sub_input.innerHTML = sub_content;
+	let items = document.getElementById("working_items");
+	let item = document.createElement("div");
+	item.classList.add("item");
+	item.setAttribute("draggable",true);
+						
+	let main_item = document.createElement("div");
+	main_item.classList.add("main_working_item");
+	main_item.id = "main_working_item_" + new_item.id;
+	let main_input = document.createElement("div");
+	main_input.classList.add("textarea");
+	main_input.contentEditable = true;
+	main_input.spellcheck = false;
+	main_input.innerHTML = new_item.main;
 	let delete_icon = document.createElement("div");
 	delete_icon.classList.add("delete_item");
-	delete_icon.onclick = () => {deleteItem(sub_item.id)};
-	sub_item.appendChild(checkbox_div);	
-	sub_item.appendChild(sub_input);
-	sub_item.appendChild(delete_icon);
-	last_item_div.appendChild(sub_item);
+	delete_icon.onclick = () => {deleteItem("main_working_item_" + new_item.id)};
+	let add_sub_item_button = document.createElement("div");
+	add_sub_item_button.classList.add("round_button");
+	add_sub_item_button.classList.add("add_sub_working_item");
+	add_sub_item_button.onclick = () => {addSubWorkingItem("main_working_item_" + new_item.id)};
+	main_item.appendChild(main_input);
+	main_item.appendChild(delete_icon);
+	item.appendChild(main_item);
+	item.appendChild(add_sub_item_button);
+	items.appendChild(item);
+	
+	working_array.push(new_item);
 }
 
-//TODO: think about the logic for delete icon
+function addMainDoneItem()
+{
+	let new_item = new Item();
+	new_item.main = "New Done";
+	
+	let items = document.getElementById("done_items");
+	let item = document.createElement("div");
+	item.classList.add("item");
+	item.setAttribute("draggable",true);
+						
+	let main_item = document.createElement("div");
+	main_item.classList.add("main_done_item");
+	main_item.id = "main_done_item_" + new_item.id;
+	let main_input = document.createElement("div");
+	main_input.classList.add("textarea");
+	main_input.contentEditable = true;
+	main_input.spellcheck = false;
+	main_input.innerHTML = new_item.main;
+	let delete_icon = document.createElement("div");
+	delete_icon.classList.add("delete_item");
+	delete_icon.onclick = () => {deleteItem("main_done_item_" + new_item.id)};
+	let add_sub_item_button = document.createElement("div");
+	add_sub_item_button.classList.add("round_button");
+	add_sub_item_button.classList.add("add_sub_done_item");
+	add_sub_item_button.onclick = () => {addSubDoneItem("main_done_item_" + new_item.id)};
+	main_item.appendChild(main_input);
+	main_item.appendChild(delete_icon);
+	item.appendChild(main_item);
+	item.appendChild(add_sub_item_button);
+	items.appendChild(item);
+	
+	done_array.push(new_item);
+}
+
+function addSubToDoItem(main_id)
+{
+	if (working_array.length <= 0)
+		return;
+	
+	//check the main id to see which one is the one, add add new item to sublist
+	let main_item = document.getElementById(main_id);
+	let array_id = main_id.replace("main_todo_item_","");
+	for (let i=0; i < working_array.length; i++)
+	{
+		if (working_array[i].id == array_id)
+		{
+			let current_todo_item = working_array[i];
+			current_todo_item.sub.push("New Todo,N");
+			
+			let parent_item = main_item.parentNode;
+			let add_sub_item_button = parent_item.getElementsByClassName("round_button add_sub_todo_item")[0];
+			
+			let sub_item = document.createElement("div");
+			sub_item.classList.add("sub_todo_item");
+			sub_item.id = "sub_todo_item_" + current_todo_item.id + "_" + (current_todo_item.sub.length - 1);
+			let checkbox_div = document.createElement("div");
+			let checkbox_input = document.createElement("input");
+			let checkbox_tick =  current_todo_item.sub[current_todo_item.sub.length -1].split(",")[1];
+			checkbox_input.type = "checkbox";
+			if (checkbox_tick == "Y")
+				checkbox_input.checked = true;
+			else if (checkbox_tick == "N")
+				checkbox_input.checked = false;
+			checkbox_div.appendChild(checkbox_input);
+			let sub_input = document.createElement("div");
+			sub_input.classList.add("textarea");
+			sub_input.contentEditable = true;
+			sub_input.spellcheck = false;
+			let sub_content = current_todo_item.sub[current_todo_item.sub.length - 1].split(",")[0];
+			sub_input.innerHTML = sub_content;
+			let delete_icon = document.createElement("div");
+			delete_icon.classList.add("delete_item");
+			delete_icon.onclick = () => {deleteItem(sub_item.id)};
+			sub_item.appendChild(checkbox_div);	
+			sub_item.appendChild(sub_input);
+			sub_item.appendChild(delete_icon);
+			parent_item.insertBefore(sub_item,add_sub_item_button);
+		}
+	}
+}
+
+function addSubWorkingItem(main_id)
+{
+	if (working_array.length <= 0)
+		return;
+	
+	let main_item = document.getElementById(main_id);
+	let array_id = main_id.replace("main_working_item_","");
+	for (let i=0; i < working_array.length; i++)
+	{
+		if (working_array[i].id == array_id)
+		{
+			let current_working_item = working_array[i];
+			current_working_item.sub.push("New Working,N");
+			
+			let parent_item = main_item.parentNode;
+			let add_sub_item_button = parent_item.getElementsByClassName("round_button add_sub_working_item")[0];
+			
+			let sub_item = document.createElement("div");
+			sub_item.classList.add("sub_working_item");
+			sub_item.id = "sub_working_item_" + current_working_item.id + "_" + (current_working_item.sub.length - 1);
+			let checkbox_div = document.createElement("div");
+			let checkbox_input = document.createElement("input");
+			let checkbox_tick =  current_working_item.sub[current_working_item.sub.length -1].split(",")[1];
+			checkbox_input.type = "checkbox";
+			if (checkbox_tick == "Y")
+				checkbox_input.checked = true;
+			else if (checkbox_tick == "N")
+				checkbox_input.checked = false;
+			checkbox_div.appendChild(checkbox_input);
+			let sub_input = document.createElement("div");
+			sub_input.classList.add("textarea");
+			sub_input.contentEditable = true;
+			sub_input.spellcheck = false;
+			let sub_content = current_working_item.sub[current_working_item.sub.length - 1].split(",")[0];
+			sub_input.innerHTML = sub_content;
+			let delete_icon = document.createElement("div");
+			delete_icon.classList.add("delete_item");
+			delete_icon.onclick = () => {deleteItem(sub_item.id)};
+			sub_item.appendChild(checkbox_div);	
+			sub_item.appendChild(sub_input);
+			sub_item.appendChild(delete_icon);
+			parent_item.insertBefore(sub_item,add_sub_item_button);
+		}
+	}
+}
+
+function addSubDoneItem(main_id)
+{
+	if (done_array.length <= 0)
+		return;
+	
+	let main_item = document.getElementById(main_id);
+	let array_id = main_id.replace("main_done_item_","");
+	for (let i=0; i < done_array.length; i++)
+	{
+		if (done_array[i].id == array_id)
+		{
+			let current_done_item = done_array[i];
+			current_done_item.sub.push("New Done,Y");
+			
+			let parent_item = main_item.parentNode;
+			let add_sub_item_button = parent_item.getElementsByClassName("round_button add_sub_done_item")[0];
+			
+			let sub_item = document.createElement("div");
+			sub_item.classList.add("sub_done_item");
+			sub_item.id = "sub_done_item_" + current_done_item.id + "_" + (current_done_item.sub.length - 1);
+			let checkbox_div = document.createElement("div");
+			let checkbox_input = document.createElement("input");
+			let checkbox_tick =  current_done_item.sub[current_done_item.sub.length -1].split(",")[1];
+			checkbox_input.type = "checkbox";
+			if (checkbox_tick == "Y")
+				checkbox_input.checked = true;
+			else if (checkbox_tick == "N")
+				checkbox_input.checked = false;
+			checkbox_div.appendChild(checkbox_input);
+			let sub_input = document.createElement("div");
+			sub_input.classList.add("textarea");
+			sub_input.contentEditable = true;
+			sub_input.spellcheck = false;
+			let sub_content = current_done_item.sub[current_done_item.sub.length - 1].split(",")[0];
+			sub_input.innerHTML = sub_content;
+			let delete_icon = document.createElement("div");
+			delete_icon.classList.add("delete_item");
+			delete_icon.onclick = () => {deleteItem(sub_item.id)};
+			sub_item.appendChild(checkbox_div);	
+			sub_item.appendChild(sub_input);
+			sub_item.appendChild(delete_icon);
+			parent_item.insertBefore(sub_item,add_sub_item_button);
+		}
+	}
+}
+
 // main delete will delete the class="item"
 // sub delete will delete the class="sub_XX_item"
 function deleteItem(id)
@@ -597,6 +772,106 @@ function deleteItem(id)
 			}
 		}
 	}
+	
+	else if (id.substring(0,17) == "main_working_item") 
+	{
+		let array_id = id.replace("main_working_item_","");
+		for (let i=0; i < working_array.length; i++)
+		{
+			if (working_array[i].id == array_id)
+			{
+				//destroy the whole item
+				delete working_array[i];
+				
+				let item_div = document.getElementById(id);
+				item_div.innerHTML = "";
+				item_div.parentNode.remove();
+				
+				working_array.splice(i,1);
+				
+			}
+		}
+	}
+	
+	else if (id.substring(0,16) == "sub_working_item") 
+	{
+		for (let i=0; i < working_array.length; i++)
+		{
+			let all_id = id.replace("sub_working_item_","")
+			let array_id = all_id.substring(0,all_id.indexOf("_"));
+			let sub_list_id = all_id.substring(all_id.indexOf("_")+1, all_id.length);
+			
+			if (working_array[i].id == array_id)
+			{
+				//remove the sub item from sub list				
+				let item_div = document.getElementById(id);
+				let parent_div =  item_div.parentNode
+				item_div.innerHTML = "";
+				parent_div.removeChild(item_div);
+				
+				let sub_list = working_array[i].sub;
+				sub_list.splice(sub_list_id,1);
+				
+				//rename all the id for the sub list
+				let sub_list_divs = parent_div.getElementsByClassName("sub_working_item");
+				for (let k=0; k < sub_list_divs.length; k++)
+				{
+					sub_list_divs[k].id = "sub_working_item_" + array_id + "_" + k;
+				}
+			}
+		}
+	}
+
+	else if (id.substring(0,14) == "main_done_item") 
+	{
+		
+		let array_id = id.replace("main_done_item_","");
+		for (let i=0; i < done_array.length; i++)
+		{
+			if (done_array[i].id == array_id)
+			{
+				//destroy the whole item
+				delete done_array[i];
+				
+				let item_div = document.getElementById(id);
+				item_div.innerHTML = "";
+				item_div.parentNode.remove();
+				
+				done_array.splice(i,1);
+				
+			}
+		}
+	}
+	
+	else if (id.substring(0,13) == "sub_done_item") 
+	{
+		for (let i=0; i < done_array.length; i++)
+		{
+			let all_id = id.replace("sub_done_item_","")
+			let array_id = all_id.substring(0,all_id.indexOf("_"));
+			let sub_list_id = all_id.substring(all_id.indexOf("_")+1, all_id.length);
+			
+			if (done_array[i].id == array_id)
+			{
+				//remove the sub item from sub list				
+				let item_div = document.getElementById(id);
+				let parent_div =  item_div.parentNode
+				item_div.innerHTML = "";
+				parent_div.removeChild(item_div);
+				
+				let sub_list = done_array[i].sub;
+				sub_list.splice(sub_list_id,1);
+				
+				//rename all the id for the sub list
+				let sub_list_divs = parent_div.getElementsByClassName("sub_done_item");
+				for (let k=0; k < sub_list_divs.length; k++)
+				{
+					sub_list_divs[k].id = "sub_done_item_" + array_id + "_" + k;
+				}
+			}
+		}
+	}
+
 }
 
 

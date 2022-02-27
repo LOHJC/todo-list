@@ -361,14 +361,8 @@ button:hover {
 	background-color: var(--kelly-green);
 }
 
-#add_items {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	justify-content: space-around;
-}
-
 .round_button {
-	margin: auto;
+	margin: 2% auto;
     border-radius: 50%;
 	background-size: 50% 50%;
 	opacity: 0.8;
@@ -386,7 +380,7 @@ button:hover {
 	background-position: center;
 }
 
-#add_sub_todo_item {
+.add_sub_todo_item {
 	background-color: var(--spearmint);
 	background-image: url("add.png");
 	background-repeat: no-repeat;
@@ -400,7 +394,7 @@ button:hover {
 	background-position: center;
 }
 
-#add_sub_working_item {
+.add_sub_working_item {
 	background-color: var(--dark-orange);
 	background-image: url("add.png");
 	background-repeat: no-repeat;
@@ -414,7 +408,7 @@ button:hover {
 	background-position: center;
 }
 
-#add_sub_done_item {
+.add_sub_done_item {
 	background-color: var(--kelly-green);
 	background-image: url("add.png");
 	background-repeat: no-repeat;
