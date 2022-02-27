@@ -489,6 +489,7 @@ function addMainToDoItem()
 						
 	let main_item = document.createElement("div");
 	main_item.classList.add("main_todo_item");
+	main_item.id = "main_todo_item_" + new_item.id;
 	let main_input = document.createElement("div");
 	main_input.classList.add("textarea");
 	main_input.contentEditable = true;
@@ -496,6 +497,7 @@ function addMainToDoItem()
 	main_input.innerHTML = new_item.main;
 	let delete_icon = document.createElement("div");
 	delete_icon.classList.add("delete_item");
+	delete_icon.onclick = () => {deleteItem("main_todo_item_" + new_item.id)};
 	main_item.appendChild(main_input);
 	main_item.appendChild(delete_icon);
 	item.appendChild(main_item);
@@ -517,6 +519,7 @@ function addSubToDoItem()
 	
 	let sub_item = document.createElement("div");
 	sub_item.classList.add("sub_todo_item");
+	sub_item.id = "sub_todo_item_" + last_item.id + "_" + (last_item.sub.length - 1);
 	let checkbox_div = document.createElement("div");
 	let checkbox_input = document.createElement("input");
 	let checkbox_tick =  last_item.sub[last_item.sub.length -1].split(",")[1];
@@ -530,15 +533,70 @@ function addSubToDoItem()
 	sub_input.classList.add("textarea");
 	sub_input.contentEditable = true;
 	sub_input.spellcheck = false;
-	let sub_content = last_item.sub[last_item.sub.length -1].split(",")[0];
+	let sub_content = last_item.sub[last_item.sub.length - 1].split(",")[0];
 	sub_input.innerHTML = sub_content;
 	let delete_icon = document.createElement("div");
 	delete_icon.classList.add("delete_item");
+	delete_icon.onclick = () => {deleteItem(sub_item.id)};
 	sub_item.appendChild(checkbox_div);	
 	sub_item.appendChild(sub_input);
 	sub_item.appendChild(delete_icon);
 	last_item_div.appendChild(sub_item);
+}
+
+//TODO: think about the logic for delete icon
+// main delete will delete the class="item"
+// sub delete will delete the class="sub_XX_item"
+function deleteItem(id)
+{
+	if (id.substring(0,14) == "main_todo_item")
+	{
+		let array_id = id.replace("main_todo_item_","");
+		for (let i=0; i < todo_array.length; i++)
+		{
+			if (todo_array[i].id == array_id)
+			{
+				//destroy the whole item
+				delete todo_array[i];
+				
+				let item_div = document.getElementById(id);
+				item_div.innerHTML = "";
+				item_div.parentNode.remove();
+				
+				todo_array.splice(i,1);
+				
+			}
+		}
+	}
 	
+	else if (id.substring(0,13) == "sub_todo_item")
+	{
+		for (let i=0; i < todo_array.length; i++)
+		{
+			let all_id = id.replace("sub_todo_item_","")
+			let array_id = all_id.substring(0,all_id.indexOf("_"));
+			let sub_list_id = all_id.substring(all_id.indexOf("_")+1, all_id.length);
+			
+			if (todo_array[i].id == array_id)
+			{
+				//remove the sub item from sub list				
+				let item_div = document.getElementById(id);
+				let parent_div =  item_div.parentNode
+				item_div.innerHTML = "";
+				parent_div.removeChild(item_div);
+				
+				let sub_list = todo_array[i].sub;
+				sub_list.splice(sub_list_id,1);
+				
+				//rename all the id for the sub list
+				let sub_list_divs = parent_div.getElementsByClassName("sub_todo_item");
+				for (let k=0; k < sub_list_divs.length; k++)
+				{
+					sub_list_divs[k].id = "sub_todo_item_" + array_id + "_" + k;
+				}
+			}
+		}
+	}
 }
 
 
