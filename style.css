@@ -79,6 +79,15 @@ html {
 		min-height: 3vh;
 	}
 	
+	.round_button {
+		width: 4.5vh;
+		height: 4.5vh;
+	}
+	
+	#delete_todo_item, #pulldrop {
+		background-size: 3vh 3vh;
+	}
+	
 	::-webkit-scrollbar {
 		width: 1.5vh;
 	}
@@ -123,6 +132,15 @@ html {
 	
 	.textarea {
 		min-height: 3vw;
+	}
+	
+	.round_button {
+		width: 4.5vw;
+		height: 4.5vw;
+	}
+	
+	#delete_todo_item, #pulldrop {
+		background-size: 3vw 3vw;
 	}
 	
 	::-webkit-scrollbar {
@@ -293,7 +311,7 @@ button:hover {
 	width: 80%;
 	height: 100%;
 	display: grid;
-	grid-template-columns: 10% 70%;
+	grid-template-columns: 5% 80%;
 	align-items: center;
 	justify-content: space-around;
 }
@@ -327,4 +345,65 @@ button:hover {
 	background-color: var(--kelly-green);
 }
 
-/*TODO: useful link for dynamic font https://css-tricks.com/snippets/css/fluid-typography/ */
+#add_todo_items {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	justify-content: space-around;
+}
+
+.round_button {
+	margin: auto;
+    border-radius: 50%;
+	background-size: 50% 50%;
+	opacity: 0.5;
+	cursor: pointer;
+}
+
+.round_button:hover {
+	opacity: 1;
+}
+
+#add_main_todo_item{
+	background-color: var(--tiffany-blue);
+	background-image: url("add.png");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#add_sub_todo_item {
+	background-color: var(--spearmint);
+	background-image: url("add.png");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#delete_todo_item {
+	height: 100%;
+	width: 100%;
+	background-image: url("delete.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0.5;
+	cursor: pointer;
+}
+
+#delete_todo_item:hover {
+	opacity: 1;
+}
+
+#pulldrop {
+	height: 100%;
+	width: 100%;
+	background-image: url("dropdown.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0.5;
+	cursor: pointer;
+}
+
+#pulldrop:hover {
+	opacity: 1;
+}
+
+
+/*useful link for dynamic font https://css-tricks.com/snippets/css/fluid-typography/ */
