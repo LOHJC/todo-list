@@ -1,5 +1,18 @@
 "use strict"
 
+//load all images 
+let img_idx = 0;
+let img_list = ["home.png","save.png", "delete.png", "dropdown.png", "pullup.png", "add.png"]
+let img = new Image();
+img.src = img_list[img_idx];
+img.onload = () => {
+	if (img_idx < img_list.length - 1)
+	{
+		img_idx += 1
+		img.src = img_list[img_idx];
+	}
+}
+
 //file variable to create and save file
 let file_handle;
 let fileOptions = {
