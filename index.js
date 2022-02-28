@@ -583,17 +583,17 @@ function addMainDoneItem()
 
 function addSubToDoItem(main_id)
 {
-	if (working_array.length <= 0)
+	if (todo_array.length <= 0)
 		return;
 	
 	//check the main id to see which one is the one, add add new item to sublist
 	let main_item = document.getElementById(main_id);
 	let array_id = main_id.replace("main_todo_item_","");
-	for (let i=0; i < working_array.length; i++)
+	for (let i=0; i < todo_array.length; i++)
 	{
-		if (working_array[i].id == array_id)
+		if (todo_array[i].id == array_id)
 		{
-			let current_todo_item = working_array[i];
+			let current_todo_item = todo_array[i];
 			current_todo_item.sub.push("New Todo,N");
 			
 			let parent_item = main_item.parentNode;
