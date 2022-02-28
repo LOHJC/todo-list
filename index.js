@@ -59,7 +59,6 @@ function gotoToDoHTML(filename, content)
 		if (filename && content)
 		{
 			//check if the uploaded file is normal todo list
-			let item = new Item();
 			let parts = content.split("\r\n\r\n")
 			if (parts.length == 3)
 			{
@@ -95,6 +94,7 @@ function gotoToDoHTML(filename, content)
 						
 						let main_item = document.createElement("div");
 						main_item.classList.add("main_todo_item");
+						main_item.id = "main_todo_item_" + todo_array[i].id;
 						let main_input = document.createElement("div");
 						main_input.classList.add("textarea");
 						main_input.contentEditable = true;
@@ -102,14 +102,16 @@ function gotoToDoHTML(filename, content)
 						main_input.innerHTML = todo_array[i].main;
 						let delete_icon = document.createElement("div");
 						delete_icon.classList.add("delete_item");
+						delete_icon.onclick = () => {deleteItem(main_item.id);}
 						main_item.appendChild(main_input);
 						main_item.appendChild(delete_icon);
 						item.appendChild(main_item);
 						
-						for (let j=0; j < todo_array[0].sub.length; j++)
+						for (let j=0; j < todo_array[i].sub.length; j++)
 						{
 							let sub_item = document.createElement("div");
 							sub_item.classList.add("sub_todo_item");
+							sub_item.id = "sub_todo_item_"+todo_array[i].id+"_"+j;
 							let checkbox_div = document.createElement("div");
 							let checkbox_input = document.createElement("input");
 							let checkbox_tick =  todo_array[i].sub[j].split(",")[1];
@@ -127,12 +129,18 @@ function gotoToDoHTML(filename, content)
 							sub_input.innerHTML = sub_content;
 							let delete_icon = document.createElement("div");
 							delete_icon.classList.add("delete_item");
+							delete_icon.onclick = () => {deleteItem(sub_item.id)};
 							sub_item.appendChild(checkbox_div);	
 							sub_item.appendChild(sub_input);
 							sub_item.appendChild(delete_icon);
 							item.appendChild(sub_item);
 						}
 						
+						let add_sub_item_button = document.createElement("div");
+						add_sub_item_button.classList.add("round_button");
+						add_sub_item_button.classList.add("add_sub_todo_item");
+						add_sub_item_button.onclick = () => {addSubToDoItem(main_item.id)};
+						item.appendChild(add_sub_item_button);
 						items.appendChild(item);
 					}
 					
@@ -148,6 +156,7 @@ function gotoToDoHTML(filename, content)
 						
 						let main_item = document.createElement("div");
 						main_item.classList.add("main_working_item");
+						main_item.id = "main_working_item_" + working_array[i].id;
 						let main_input = document.createElement("div");
 						main_input.classList.add("textarea");
 						main_input.contentEditable = true;
@@ -155,14 +164,16 @@ function gotoToDoHTML(filename, content)
 						main_input.innerHTML = working_array[i].main;
 						let delete_icon = document.createElement("div");
 						delete_icon.classList.add("delete_item");
+						delete_icon.onclick = () => {deleteItem(main_item.id);}
 						main_item.appendChild(main_input);
 						main_item.appendChild(delete_icon);
 						item.appendChild(main_item);
 						
-						for (let j=0; j < working_array[0].sub.length; j++)
+						for (let j=0; j < working_array[i].sub.length; j++)
 						{
 							let sub_item = document.createElement("div");
 							sub_item.classList.add("sub_working_item");
+							sub_item.id = "sub_working_item_"+working_array[i].id+"_"+j;
 							let checkbox_div = document.createElement("div");
 							let checkbox_input = document.createElement("input");
 							let checkbox_tick =  working_array[i].sub[j].split(",")[1];
@@ -179,12 +190,18 @@ function gotoToDoHTML(filename, content)
 							sub_input.innerHTML = working_array[i].sub[j].split(",")[0];
 							let delete_icon = document.createElement("div");
 							delete_icon.classList.add("delete_item");
+							delete_icon.onclick = () => {deleteItem(sub_item.id)};
 							sub_item.appendChild(checkbox_div);	
 							sub_item.appendChild(sub_input);
 							sub_item.appendChild(delete_icon);
 							item.appendChild(sub_item);
 						}
 						
+						let add_sub_item_button = document.createElement("div");
+						add_sub_item_button.classList.add("round_button");
+						add_sub_item_button.classList.add("add_sub_working_item");
+						add_sub_item_button.onclick = () => {addSubWorkingItem(main_item.id)};
+						item.appendChild(add_sub_item_button);
 						items.appendChild(item);
 					}
 					
@@ -200,6 +217,7 @@ function gotoToDoHTML(filename, content)
 						
 						let main_item = document.createElement("div");
 						main_item.classList.add("main_done_item");
+						main_item.id = "main_done_item_" + done_array[i].id;
 						let main_input = document.createElement("div");
 						main_input.classList.add("textarea");
 						main_input.contentEditable = true;
@@ -209,12 +227,14 @@ function gotoToDoHTML(filename, content)
 						delete_icon.classList.add("delete_item");
 						main_item.appendChild(main_input);
 						main_item.appendChild(delete_icon);
+						delete_icon.onclick = () => {deleteItem(main_item.id);}
 						item.appendChild(main_item);
 						
-						for (let j=0; j < done_array[0].sub.length; j++)
+						for (let j=0; j < done_array[i].sub.length; j++)
 						{
 							let sub_item = document.createElement("div");
 							sub_item.classList.add("sub_done_item");
+							sub_item.id = "sub_done_item_" + done_array[i].id + "_" + j;
 							let checkbox_div = document.createElement("div");
 							let checkbox_input = document.createElement("input");
 							let checkbox_tick =  done_array[i].sub[j].split(",")[1];
@@ -231,12 +251,18 @@ function gotoToDoHTML(filename, content)
 							sub_input.innerHTML = done_array[i].sub[j].split(",")[0];
 							let delete_icon = document.createElement("div");
 							delete_icon.classList.add("delete_item");
+							delete_icon.onclick = () => {deleteItem(sub_item.id)};
 							sub_item.appendChild(checkbox_div);	
 							sub_item.appendChild(sub_input);
 							sub_item.appendChild(delete_icon);
 							item.appendChild(sub_item);
 						}
 						
+						let add_sub_item_button = document.createElement("div");
+						add_sub_item_button.classList.add("round_button");
+						add_sub_item_button.classList.add("add_sub_done_item");
+						add_sub_item_button.onclick = () => {addSubDoneItem(main_item.id)};
+						item.appendChild(add_sub_item_button);
 						items.appendChild(item);
 					}
 					
@@ -296,6 +322,40 @@ async function saveFile()
 	//TODO: write the content into file
 	//let content = document.getElementById("text_area").value;
 	
+	//get all the arrays and write it into file
+	let content = "";
+	content += "## TODO\r\n";
+	for (let i = 0; i < todo_array.length; i++)
+	{
+		content += "- "  + todo_array[i].main + "\r\n";
+		for (let j=0; j < todo_array[i].sub.length; j++)
+		{
+			content += "    - " + todo_array[i].sub[j] + "\r\n"
+		}
+	}
+	
+	content += "\r\n";
+	content += "## WORKING\r\n";
+	for (let i = 0; i < working_array.length; i++)
+	{
+		content += "- "  + working_array[i].main + "\r\n";
+		for (let j=0; j < working_array[i].sub.length; j++)
+		{
+			content += "    - " + working_array[i].sub[j] + "\r\n";
+		}
+	}
+	
+	content += "\r\n";
+	content += "## DONE\r\n";
+	for (let i = 0; i < done_array.length; i++)
+	{
+		content += "- "  + done_array[i].main + "\r\n";
+		for (let j=0; j < done_array[i].sub.length; j++)
+		{
+			content += "    - " + done_array[i].sub[j] + "\r\n";
+		}
+	}
+	
 	
 	let writable = await file_handle.createWritable();
 	await writable.write(content);
@@ -338,7 +398,6 @@ class Item
 	}
 }
 
-//TODO: update design to latest one (buttons, and add id to divs, and add onclicks)
 function setToDoArray(todo_content)
 {
 	if (todo_content.substring(0,9) == "## TODO\r\n")
@@ -385,7 +444,6 @@ function setToDoArray(todo_content)
 	}
 }
 
-//TODO: update design to latest one (buttons, and add id to divs, and add onclicks)
 function setWorkingArray(working_content)
 {
 	if (working_content.substring(0,12) == "## WORKING\r\n")
@@ -432,7 +490,6 @@ function setWorkingArray(working_content)
 	}
 }
 
-//TODO: update design to latest one (buttons, and add id to divs, and add onclicks)
 function setDoneArray(done_content)
 {
 	if (done_content.substring(0,9) == "## DONE\r\n")
@@ -874,4 +931,4 @@ function deleteItem(id)
 
 }
 
-
+//TODO: add reaction to checkbox, so data in item is updated
