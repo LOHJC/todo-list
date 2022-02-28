@@ -931,4 +931,4 @@ function deleteItem(id)
 
 }
 
-//TODO: add reaction to checkbox, so data in item is updated
+//TODO: add reaction to checkbox and also to contenteditable, so data in item is updated
