@@ -90,7 +90,7 @@ html {
 		background-size: 3vh 3vh;
 	}
 	
-	#home_button, #save_file {
+	#home_button, #save_file, #todo_saving_process{
 		height: 4vh;
 		width: 4vh;
 		background-size: 4vh 4vh;
@@ -153,7 +153,7 @@ html {
 		background-size: 3vw 3vw;
 	}
 	
-	#home_button, #save_file {
+	#home_button, #save_file, #todo_saving_process{
 		height: 4vw;
 		width: 4vw;
 		background-size: 4vw 4vw;
@@ -449,6 +449,12 @@ button:hover {
 
 #save_file {
 	background-image: url("save.png");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#todo_saving_process {
+	background-image: url("not_saved.png");
 	background-repeat: no-repeat;
 	background-position: center;
 }

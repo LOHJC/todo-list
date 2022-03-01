@@ -2,7 +2,7 @@
 
 //load all images 
 let img_idx = 0;
-let img_list = ["home.png","save.png", "delete.png", "dropdown.png", "pullup.png", "add.png"]
+let img_list = ["home.png","save.png", "delete.png", "dropdown.png", "pullup.png", "add.png", "not_saved.png", "saving.png", "done_saved.png"]
 let img = new Image();
 img.src = img_list[img_idx];
 img.onload = () => {
@@ -323,6 +323,7 @@ async function saveFile()
 	//let content = document.getElementById("text_area").value;
 	
 	//get all the arrays and write it into file
+	document.getElementById("todo_saving_process").style.backgroundImage = "url('saving.png')";
 	let content = "";
 	content += "## TODO\r\n";
 	for (let i = 0; i < todo_array.length; i++)
@@ -357,9 +358,14 @@ async function saveFile()
 	}
 	
 	
-	let writable = await file_handle.createWritable();
-	await writable.write(content);
-	await writable.close();
+	try {
+		let writable = await file_handle.createWritable();
+		await writable.write(content);
+		await writable.close();
+		document.getElementById("todo_saving_process").style.backgroundImage = "url('done_saved.png')";
+	} catch(err) {
+		document.getElementById("todo_saving_process").style.backgroundImage = "url('not_saved.png')";
+	}
 }
 
 class Item 
@@ -932,3 +938,5 @@ function deleteItem(id)
 }
 
 //TODO: add reaction to checkbox and also to contenteditable, so data in item is updated
+//can add a update content function before saving
+//or can change the content after changes are made immediately
