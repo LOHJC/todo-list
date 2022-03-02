@@ -20,7 +20,7 @@ let fileOptions = {
 		{
 			description: "TODOLOH",
 			accept: {
-				"text/markdown": [".todoloh", ".md"]
+				"text/markdown": [".tdl", ".md"]
 			},
 			excludeAcceptAllOption: true,
 			multiple: false
@@ -79,7 +79,7 @@ function gotoToDoHTML(filename, content)
 				{
 					//set the file name
 					let todo_filename = document.getElementById("todo_filename")
-					todo_filename.innerHTML = filename.replace(".todoloh","").replace(".md","");
+					todo_filename.innerHTML = filename.replace(".tdl","").replace(".md","");
 					todo_filename.contentEditable = false;
 					
 					//todo
@@ -100,6 +100,7 @@ function gotoToDoHTML(filename, content)
 						main_input.contentEditable = true;
 						main_input.spellcheck = false;
 						main_input.innerHTML = todo_array[i].main;
+						main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 						let delete_icon = document.createElement("div");
 						delete_icon.classList.add("delete_item");
 						delete_icon.onclick = () => {deleteItem(main_item.id);}
@@ -116,6 +117,7 @@ function gotoToDoHTML(filename, content)
 							let checkbox_input = document.createElement("input");
 							let checkbox_tick =  todo_array[i].sub[j].split(",")[1];
 							checkbox_input.type = "checkbox";
+							checkbox_input.onchange = () => {contentChanged()}; //trigger content change for checkbox
 							if (checkbox_tick == "Y")
 								checkbox_input.checked = true;
 							else if (checkbox_tick == "N")
@@ -125,6 +127,7 @@ function gotoToDoHTML(filename, content)
 							sub_input.classList.add("textarea");
 							sub_input.contentEditable = true;
 							sub_input.spellcheck = false;
+							sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 							let sub_content = todo_array[i].sub[j].split(",")[0];
 							sub_input.innerHTML = sub_content;
 							let delete_icon = document.createElement("div");
@@ -162,6 +165,7 @@ function gotoToDoHTML(filename, content)
 						main_input.contentEditable = true;
 						main_input.spellcheck = false;
 						main_input.innerHTML = working_array[i].main;
+						main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 						let delete_icon = document.createElement("div");
 						delete_icon.classList.add("delete_item");
 						delete_icon.onclick = () => {deleteItem(main_item.id);}
@@ -178,6 +182,7 @@ function gotoToDoHTML(filename, content)
 							let checkbox_input = document.createElement("input");
 							let checkbox_tick =  working_array[i].sub[j].split(",")[1];
 							checkbox_input.type = "checkbox";
+							checkbox_input.onchange = () => {contentChanged()}; //trigger content change for checkbox
 							if (checkbox_tick == "Y")
 								checkbox_input.checked = true;
 							else if (checkbox_tick == "N")
@@ -188,6 +193,7 @@ function gotoToDoHTML(filename, content)
 							sub_input.contentEditable = true;
 							sub_input.spellcheck = false;
 							sub_input.innerHTML = working_array[i].sub[j].split(",")[0];
+							sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 							let delete_icon = document.createElement("div");
 							delete_icon.classList.add("delete_item");
 							delete_icon.onclick = () => {deleteItem(sub_item.id)};
@@ -223,6 +229,7 @@ function gotoToDoHTML(filename, content)
 						main_input.contentEditable = true;
 						main_input.spellcheck = false;
 						main_input.innerHTML = done_array[i].main;
+						main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 						let delete_icon = document.createElement("div");
 						delete_icon.classList.add("delete_item");
 						main_item.appendChild(main_input);
@@ -237,6 +244,7 @@ function gotoToDoHTML(filename, content)
 							sub_item.id = "sub_done_item_" + done_array[i].id + "_" + j;
 							let checkbox_div = document.createElement("div");
 							let checkbox_input = document.createElement("input");
+							checkbox_input.onchange = () => {contentChanged()}; //trigger content change for checkbox
 							let checkbox_tick =  done_array[i].sub[j].split(",")[1];
 							checkbox_input.type = "checkbox";
 							if (checkbox_tick == "Y")
@@ -249,6 +257,7 @@ function gotoToDoHTML(filename, content)
 							sub_input.contentEditable = true;
 							sub_input.spellcheck = false;
 							sub_input.innerHTML = done_array[i].sub[j].split(",")[0];
+							sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 							let delete_icon = document.createElement("div");
 							delete_icon.classList.add("delete_item");
 							delete_icon.onclick = () => {deleteItem(sub_item.id)};
@@ -274,6 +283,11 @@ function gotoToDoHTML(filename, content)
 		let save_file = document.getElementById("save_file");
 		if (save_file)
 			save_file.addEventListener("click", saveFile);
+		
+		//bind home button
+		let home_button = document.getElementById("home_button");
+		if (home_button)
+			home_button.addEventListener("click", backToHome)
 	}
 }
 
@@ -310,7 +324,7 @@ async function saveFile()
 			{
 				description: "TODOLOH",
 				accept: {
-				  "text/markdown": [".todoloh", ".md"],
+				  "text/markdown": [".tdl", ".md"],
 				},
 			  },
 			],
@@ -319,11 +333,15 @@ async function saveFile()
 	}
 	
 	
-	//TODO: write the content into file
-	//let content = document.getElementById("text_area").value;
+	//write the content into file
 	
 	//get all the arrays and write it into file
 	document.getElementById("todo_saving_process").style.backgroundImage = "url('saving.png')";
+	
+	//get all the new contents from the todo.html
+	updateArrays();
+	
+	//save everything into the local file
 	let content = "";
 	content += "## TODO\r\n";
 	for (let i = 0; i < todo_array.length; i++)
@@ -368,6 +386,12 @@ async function saveFile()
 	}
 }
 
+//back to home page
+async function backToHome()
+{
+	await saveFile();
+	setTimeout(() => {window.location.href = "/index.html"},500);
+}
 class Item 
 {
 	constructor ()
@@ -560,6 +584,7 @@ function addMainToDoItem()
 	main_input.contentEditable = true;
 	main_input.spellcheck = false;
 	main_input.innerHTML = new_item.main;
+	main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 	let delete_icon = document.createElement("div");
 	delete_icon.classList.add("delete_item");
 	delete_icon.onclick = () => {deleteItem("main_todo_item_" + new_item.id)};
@@ -574,6 +599,8 @@ function addMainToDoItem()
 	items.appendChild(item);
 	
 	todo_array.push(new_item);
+	
+	contentChanged();
 }
 
 function addMainWorkingItem()
@@ -594,6 +621,7 @@ function addMainWorkingItem()
 	main_input.contentEditable = true;
 	main_input.spellcheck = false;
 	main_input.innerHTML = new_item.main;
+	main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 	let delete_icon = document.createElement("div");
 	delete_icon.classList.add("delete_item");
 	delete_icon.onclick = () => {deleteItem("main_working_item_" + new_item.id)};
@@ -608,6 +636,8 @@ function addMainWorkingItem()
 	items.appendChild(item);
 	
 	working_array.push(new_item);
+	
+	contentChanged();
 }
 
 function addMainDoneItem()
@@ -628,6 +658,7 @@ function addMainDoneItem()
 	main_input.contentEditable = true;
 	main_input.spellcheck = false;
 	main_input.innerHTML = new_item.main;
+	main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 	let delete_icon = document.createElement("div");
 	delete_icon.classList.add("delete_item");
 	delete_icon.onclick = () => {deleteItem("main_done_item_" + new_item.id)};
@@ -642,6 +673,8 @@ function addMainDoneItem()
 	items.appendChild(item);
 	
 	done_array.push(new_item);
+	
+	contentChanged();
 }
 
 function addSubToDoItem(main_id)
@@ -667,6 +700,7 @@ function addSubToDoItem(main_id)
 			sub_item.id = "sub_todo_item_" + current_todo_item.id + "_" + (current_todo_item.sub.length - 1);
 			let checkbox_div = document.createElement("div");
 			let checkbox_input = document.createElement("input");
+			checkbox_input.onchange = () => {contentChanged()}; //trigger content change for checkbox
 			let checkbox_tick =  current_todo_item.sub[current_todo_item.sub.length -1].split(",")[1];
 			checkbox_input.type = "checkbox";
 			if (checkbox_tick == "Y")
@@ -678,6 +712,7 @@ function addSubToDoItem(main_id)
 			sub_input.classList.add("textarea");
 			sub_input.contentEditable = true;
 			sub_input.spellcheck = false;
+			sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 			let sub_content = current_todo_item.sub[current_todo_item.sub.length - 1].split(",")[0];
 			sub_input.innerHTML = sub_content;
 			let delete_icon = document.createElement("div");
@@ -689,6 +724,8 @@ function addSubToDoItem(main_id)
 			parent_item.insertBefore(sub_item,add_sub_item_button);
 		}
 	}
+	
+	contentChanged();
 }
 
 function addSubWorkingItem(main_id)
@@ -713,6 +750,7 @@ function addSubWorkingItem(main_id)
 			sub_item.id = "sub_working_item_" + current_working_item.id + "_" + (current_working_item.sub.length - 1);
 			let checkbox_div = document.createElement("div");
 			let checkbox_input = document.createElement("input");
+			checkbox_input.onchange = () => {contentChanged()}; //trigger content change for checkbox
 			let checkbox_tick =  current_working_item.sub[current_working_item.sub.length -1].split(",")[1];
 			checkbox_input.type = "checkbox";
 			if (checkbox_tick == "Y")
@@ -724,6 +762,7 @@ function addSubWorkingItem(main_id)
 			sub_input.classList.add("textarea");
 			sub_input.contentEditable = true;
 			sub_input.spellcheck = false;
+			sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 			let sub_content = current_working_item.sub[current_working_item.sub.length - 1].split(",")[0];
 			sub_input.innerHTML = sub_content;
 			let delete_icon = document.createElement("div");
@@ -735,6 +774,8 @@ function addSubWorkingItem(main_id)
 			parent_item.insertBefore(sub_item,add_sub_item_button);
 		}
 	}
+	
+	contentChanged();
 }
 
 function addSubDoneItem(main_id)
@@ -759,6 +800,7 @@ function addSubDoneItem(main_id)
 			sub_item.id = "sub_done_item_" + current_done_item.id + "_" + (current_done_item.sub.length - 1);
 			let checkbox_div = document.createElement("div");
 			let checkbox_input = document.createElement("input");
+			checkbox_input.onchange = () => {contentChanged()}; //trigger content change for checkbox
 			let checkbox_tick =  current_done_item.sub[current_done_item.sub.length -1].split(",")[1];
 			checkbox_input.type = "checkbox";
 			if (checkbox_tick == "Y")
@@ -770,6 +812,7 @@ function addSubDoneItem(main_id)
 			sub_input.classList.add("textarea");
 			sub_input.contentEditable = true;
 			sub_input.spellcheck = false;
+			sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 			let sub_content = current_done_item.sub[current_done_item.sub.length - 1].split(",")[0];
 			sub_input.innerHTML = sub_content;
 			let delete_icon = document.createElement("div");
@@ -781,6 +824,8 @@ function addSubDoneItem(main_id)
 			parent_item.insertBefore(sub_item,add_sub_item_button);
 		}
 	}
+	
+	contentChanged();
 }
 
 // main delete will delete the class="item"
@@ -934,9 +979,156 @@ function deleteItem(id)
 			}
 		}
 	}
-
+	
+	contentChanged();
 }
 
 //TODO: add reaction to checkbox and also to contenteditable, so data in item is updated
-//can add a update content function before saving
-//or can change the content after changes are made immediately
+//shows the content has been changed by changing the saving icon
+//will be triggered by add, delete, content modified (checkbox and textarea)
+//update the contents before save file
+
+//TODO: update arrays
+function updateArrays()
+{
+	//todo
+	let todo_items = document.getElementById("todo_items").getElementsByClassName("item");
+	for (let i=0; i < todo_items.length; i++)
+	{
+		//main
+		let main_item = document.getElementsByClassName("main_todo_item")[i];
+		let main_id = main_item.id.replace("main_todo_item_","");
+		
+		for (let temp=0; temp < todo_array.length; temp++)
+		{
+			if (todo_array[temp].id == main_id)
+			{
+				todo_array[temp].main = main_item.getElementsByClassName("textarea")[0].innerHTML;
+				break;
+			}
+		}
+		
+		//subs
+		let sub_items = todo_items[i].getElementsByClassName("sub_todo_item");
+		for (let j=0; j < sub_items.length; j++)
+		{
+			let all_id = sub_items[j].id.replace("sub_todo_item_","")
+			let main_id = all_id.substring(0,all_id.indexOf("_"));
+			let sub_id = all_id.substring(all_id.indexOf("_")+1, all_id.length);
+			
+			for (let temp=0; temp < todo_array.length; temp++)
+			{
+				if (todo_array[temp].id == main_id)
+				{
+					if (todo_array[temp].sub.length > sub_id)
+					{
+						let checked = sub_items[j].getElementsByTagName("input")[0].checked;
+						let final_checked = "";
+						if (checked)
+							final_checked = "Y";
+						else
+							final_checked = "N";
+						todo_array[temp].sub[sub_id] = sub_items[j].getElementsByClassName("textarea")[0].innerHTML + "," + final_checked;
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	//working
+	let working_items = document.getElementById("working_items").getElementsByClassName("item");
+	for (let i=0; i < working_items.length; i++)
+	{
+		//main
+		let main_item = document.getElementsByClassName("main_working_item")[i];
+		let main_id = main_item.id.replace("main_working_item_","");
+		
+		for (let temp=0; temp < working_array.length; temp++)
+		{
+			if (working_array[temp].id == main_id)
+			{
+				working_array[temp].main = main_item.getElementsByClassName("textarea")[0].innerHTML;
+				break;
+			}
+		}
+		
+		//subs
+		let sub_items = working_items[i].getElementsByClassName("sub_working_item");
+		for (let j=0; j < sub_items.length; j++)
+		{
+			let all_id = sub_items[j].id.replace("sub_working_item_","")
+			let main_id = all_id.substring(0,all_id.indexOf("_"));
+			let sub_id = all_id.substring(all_id.indexOf("_")+1, all_id.length);
+			
+			for (let temp=0; temp < working_array.length; temp++)
+			{
+				if (working_array[temp].id == main_id)
+				{
+					if (working_array[temp].sub.length > sub_id)
+					{
+						let checked = sub_items[j].getElementsByTagName("input")[0].checked;
+						let final_checked = "";
+						if (checked)
+							final_checked = "Y";
+						else
+							final_checked = "N";
+						working_array[temp].sub[sub_id] = sub_items[j].getElementsByClassName("textarea")[0].innerHTML + "," + final_checked;
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	//done
+	let done_items = document.getElementById("done_items").getElementsByClassName("item");
+	for (let i=0; i < done_items.length; i++)
+	{
+		//main
+		let main_item = document.getElementsByClassName("main_done_item")[i];
+		let main_id = main_item.id.replace("main_done_item_","");
+		
+		for (let temp=0; temp < done_array.length; temp++)
+		{
+			if (done_array[temp].id == main_id)
+			{
+				done_array[temp].main = main_item.getElementsByClassName("textarea")[0].innerHTML;
+				break;
+			}
+		}
+		
+		//subs
+		let sub_items = done_items[i].getElementsByClassName("sub_done_item");
+		for (let j=0; j < sub_items.length; j++)
+		{
+			let all_id = sub_items[j].id.replace("sub_done_item_","")
+			let main_id = all_id.substring(0,all_id.indexOf("_"));
+			let sub_id = all_id.substring(all_id.indexOf("_")+1, all_id.length);
+			
+			for (let temp=0; temp < done_array.length; temp++)
+			{
+				if (done_array[temp].id == main_id)
+				{
+					if (done_array[temp].sub.length > sub_id)
+					{
+						let checked = sub_items[j].getElementsByTagName("input")[0].checked;
+						let final_checked = "";
+						if (checked)
+							final_checked = "Y";
+						else
+							final_checked = "N";
+						done_array[temp].sub[sub_id] = sub_items[j].getElementsByClassName("textarea")[0].innerHTML + "," + final_checked;
+						break;
+					}
+				}
+			}
+		}
+	}
+}
+
+function contentChanged()
+{
+	//change the saving process icon to not saved
+	document.getElementById("todo_saving_process").style.backgroundImage = "url('not_saved.png')";	
+}

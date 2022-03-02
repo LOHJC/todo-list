@@ -1,0 +1,24 @@
+## TODO
+- Do the draggable to move from todo to working and to done
+    - need to make sure all the div are able to drop,N
+    - make sure the color changes according to the div,N
+    - might need to consider to mave the main items within its div (arrangement),N
+    - might need to considering making the sub items to be draggable too (maybe only limited to current main item only),N
+- features
+    - maybe consider a strike style for those sub items that has been done (ticked),N
+    - maybe change the main item font weight to bold,N
+    - maybe bind shortcut keys (Eg. Ctrl+S for saving),N
+
+## WORKING
+- The real working version
+    - Done working,Y
+    - Testing it now,N
+- Work on the file naming for new todo
+    - file name in webpage change to the filename in local file,N
+    - check if it is possible to change the filename of localfile through the webpage,N
+
+## DONE
+- Developed a basic working todo list
+    - can create new file,Y
+    - can save file,Y
+    - can modify by uploading the file,Y
