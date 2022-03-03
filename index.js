@@ -388,9 +388,16 @@ async function saveFile()
 
 //back to home page
 async function backToHome()
-{
-	await saveFile();
-	setTimeout(() => {window.location.href = "index.html"},500);
+{ 
+	try {
+		await saveFile();
+		setTimeout(() => {window.location.href = "index.html"},500);
+	}
+	
+	catch (err)
+	{
+		setTimeout(() => {window.location.href = "index.html"},500);
+	}
 }
 class Item 
 {
