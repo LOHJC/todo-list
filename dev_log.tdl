@@ -4,10 +4,6 @@
     - make sure the color changes according to the div,N
     - might need to consider to mave the main items within its div (arrangement),N
     - might need to considering making the sub items to be draggable too (maybe only limited to current main item only),N
-- features
-    - maybe consider a strike style for those sub items that has been done (ticked),N
-    - maybe change the main item font weight to bold,N
-    - maybe bind shortcut keys (Eg. Ctrl+S for saving),N
 
 ## WORKING
 - The real working version
@@ -22,3 +18,6 @@
     - can create new file,Y
     - can save file,Y
     - can modify by uploading the file,Y
+- features
+    - added strike line for done task,Y
+    - added Ctrl+S to save file,Y

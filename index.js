@@ -117,7 +117,7 @@ function gotoToDoHTML(filename, content)
 							let checkbox_input = document.createElement("input");
 							let checkbox_tick =  todo_array[i].sub[j].split(",")[1];
 							checkbox_input.type = "checkbox";
-							checkbox_input.onchange = () => {contentChanged()}; //trigger content change for checkbox
+							checkbox_input.onchange = () => {checkCheckbox(sub_item.id); contentChanged()}; //trigger content change for checkbox
 							if (checkbox_tick == "Y")
 								checkbox_input.checked = true;
 							else if (checkbox_tick == "N")
@@ -182,7 +182,7 @@ function gotoToDoHTML(filename, content)
 							let checkbox_input = document.createElement("input");
 							let checkbox_tick =  working_array[i].sub[j].split(",")[1];
 							checkbox_input.type = "checkbox";
-							checkbox_input.onchange = () => {contentChanged()}; //trigger content change for checkbox
+							checkbox_input.onchange = () => {checkCheckbox(sub_item.id); contentChanged()}; //trigger content change for checkbox
 							if (checkbox_tick == "Y")
 								checkbox_input.checked = true;
 							else if (checkbox_tick == "N")
@@ -244,7 +244,7 @@ function gotoToDoHTML(filename, content)
 							sub_item.id = "sub_done_item_" + done_array[i].id + "_" + j;
 							let checkbox_div = document.createElement("div");
 							let checkbox_input = document.createElement("input");
-							checkbox_input.onchange = () => {contentChanged()}; //trigger content change for checkbox
+							checkbox_input.onchange = () => {checkCheckbox(sub_item.id); contentChanged()}; //trigger content change for checkbox
 							let checkbox_tick =  done_array[i].sub[j].split(",")[1];
 							checkbox_input.type = "checkbox";
 							if (checkbox_tick == "Y")
@@ -275,6 +275,12 @@ function gotoToDoHTML(filename, content)
 						items.appendChild(item);
 					}
 					
+					//check all the checkbox of sub items
+					let checkboxes = document.querySelectorAll("input[type=checkbox]")
+					for (let i=0; i < checkboxes.length; i++)
+					{
+						checkCheckbox(checkboxes[i].parentNode.parentNode.id);
+					}
 				}
 			}
 		}
@@ -300,17 +306,18 @@ function newToDoList()
 //upload file
 async function uploadFile()
 {
-	[file_handle] = await window.showOpenFilePicker(fileOptions);
-	
-	if (!file_handle)
-		return;
-	
-	let file = await file_handle.getFile();
-	let filename = file.name;
-	let contents = await file.text();
-	
-	//load the uploaded file data into text area
-	gotoToDoHTML(filename, contents);
+	try {
+		[file_handle] = await window.showOpenFilePicker(fileOptions);
+		let file = await file_handle.getFile();
+		let filename = file.name;
+		let contents = await file.text();
+		
+		//load the uploaded file data into text area
+		gotoToDoHTML(filename, contents);
+	} 
+	catch (err) {
+		alert("You did not upload any file");
+	}
 }
 
 //save file
@@ -387,16 +394,23 @@ async function saveFile()
 }
 
 //back to home page
-async function backToHome()
-{ 
-	try {
-		await saveFile();
-		setTimeout(() => {window.location.href = "index.html"},500);
-	}
-	
-	catch (err)
+function backToHome()
+{
+	if (confirm("Do you want to save the changes made?"))
 	{
-		setTimeout(() => {window.location.href = "index.html"},500);
+		try {
+			saveFile();
+			setTimeout(() => {window.location.href = "index.html"},500);
+		}
+		
+		catch (err)
+		{
+			setTimeout(() => {window.location.href = "index.html"},500);
+		}
+	}
+	else
+	{
+			setTimeout(() => {window.location.href = "index.html"},500);
 	}
 }
 class Item 
@@ -707,7 +721,7 @@ function addSubToDoItem(main_id)
 			sub_item.id = "sub_todo_item_" + current_todo_item.id + "_" + (current_todo_item.sub.length - 1);
 			let checkbox_div = document.createElement("div");
 			let checkbox_input = document.createElement("input");
-			checkbox_input.onchange = () => {contentChanged()}; //trigger content change for checkbox
+			checkbox_input.onchange = () => {checkCheckbox(sub_item.id); contentChanged()}; //trigger content change for checkbox
 			let checkbox_tick =  current_todo_item.sub[current_todo_item.sub.length -1].split(",")[1];
 			checkbox_input.type = "checkbox";
 			if (checkbox_tick == "Y")
@@ -757,7 +771,7 @@ function addSubWorkingItem(main_id)
 			sub_item.id = "sub_working_item_" + current_working_item.id + "_" + (current_working_item.sub.length - 1);
 			let checkbox_div = document.createElement("div");
 			let checkbox_input = document.createElement("input");
-			checkbox_input.onchange = () => {contentChanged()}; //trigger content change for checkbox
+			checkbox_input.onchange = () => {checkCheckbox(sub_item.id); contentChanged()}; //trigger content change for checkbox
 			let checkbox_tick =  current_working_item.sub[current_working_item.sub.length -1].split(",")[1];
 			checkbox_input.type = "checkbox";
 			if (checkbox_tick == "Y")
@@ -807,7 +821,7 @@ function addSubDoneItem(main_id)
 			sub_item.id = "sub_done_item_" + current_done_item.id + "_" + (current_done_item.sub.length - 1);
 			let checkbox_div = document.createElement("div");
 			let checkbox_input = document.createElement("input");
-			checkbox_input.onchange = () => {contentChanged()}; //trigger content change for checkbox
+			checkbox_input.onchange = () => {checkCheckbox(sub_item.id); contentChanged()}; //trigger content change for checkbox
 			let checkbox_tick =  current_done_item.sub[current_done_item.sub.length -1].split(",")[1];
 			checkbox_input.type = "checkbox";
 			if (checkbox_tick == "Y")
@@ -829,9 +843,10 @@ function addSubDoneItem(main_id)
 			sub_item.appendChild(sub_input);
 			sub_item.appendChild(delete_icon);
 			parent_item.insertBefore(sub_item,add_sub_item_button);
+			checkCheckbox(sub_item.id);
 		}
 	}
-	
+
 	contentChanged();
 }
 
@@ -1137,5 +1152,28 @@ function updateArrays()
 function contentChanged()
 {
 	//change the saving process icon to not saved
-	document.getElementById("todo_saving_process").style.backgroundImage = "url('not_saved.png')";	
+	document.getElementById("todo_saving_process").style.backgroundImage = "url('not_saved.png')";
 }
+
+function checkCheckbox(sub_item_id)
+{
+	let sub_item = document.getElementById(sub_item_id);
+	let check_box = sub_item.getElementsByTagName("input")[0];
+	if (check_box.checked)
+		sub_item.getElementsByClassName("textarea")[0].style.textDecoration =  "line-through";
+	else
+		sub_item.getElementsByClassName("textarea")[0].style.textDecoration =  "none";
+}
+
+
+//bind Ctrl+S to save file
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey && e.key === "s") {
+    e.preventDefault(); // Prevent the Save dialog to open
+    
+	try {
+		saveFile();
+	}
+	catch (err) {}
+  }
+});

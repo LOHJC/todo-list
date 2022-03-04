@@ -322,6 +322,7 @@ button:hover {
 	grid-template-columns: 70% 10%;
 	align-items: center;
 	justify-content: space-around;
+	font-weight: bold;
 }
 .sub_todo_item, .sub_working_item, .sub_done_item {
 	width: 80%;
