@@ -315,9 +315,7 @@ async function uploadFile()
 		//load the uploaded file data into text area
 		gotoToDoHTML(filename, contents);
 	} 
-	catch (err) {
-		alert("You did not upload any file");
-	}
+	catch (err) {}
 }
 
 //save file
@@ -327,6 +325,7 @@ async function saveFile()
 	if (!file_handle)
 	{
 		const options = {
+			suggestedName: "UNTITLED",
 			types: [
 			{
 				description: "TODOLOH",
@@ -337,8 +336,8 @@ async function saveFile()
 			],
 		  };
 		file_handle = await window.showSaveFilePicker(options);
+		document.getElementById("todo_filename").innerHTML = file_handle.name.replace(".tdl","").replace(".md","")
 	}
-	
 	
 	//write the content into file
 	
@@ -1164,7 +1163,6 @@ function checkCheckbox(sub_item_id)
 	else
 		sub_item.getElementsByClassName("textarea")[0].style.textDecoration =  "none";
 }
-
 
 //bind Ctrl+S to save file
 document.addEventListener("keydown", e => {

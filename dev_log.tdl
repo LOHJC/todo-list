@@ -6,11 +6,8 @@
     - might need to considering making the sub items to be draggable too (maybe only limited to current main item only),N
 
 ## WORKING
-- The real working version
-    - Done working,Y
-    - Testing it now,N
 - Work on the file naming for new todo
-    - file name in webpage change to the filename in local file,N
+    - file name in webpage change to the filename in local file,Y
     - check if it is possible to change the filename of localfile through the webpage,N
 
 ## DONE
