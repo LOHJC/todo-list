@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--https://www.freecodecamp.org/news/basic-html5-template-boilerplate-code-example/-->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Todo List</title>
+		<link rel="stylesheet" href="./style.css">
+		<link rel="shortcut icon" href="./favicon.ico">
+	</head>
+	
+	<body>
+		<header class="text-center">
+			<div id="todo_menu">
+				<div id="todo_mainmenu">
+					<div id="todo_filename">UNTITLED</div>
+				</div>
+				
+				<div id="todo_saving_process"></div>
+				
+				<div id="todo_submenu">
+					<div class="content_button" id="home_button"></div>
+					<div class="content_button" id="save_file"></div>
+				</div>
+				
+			</div>
+		</header>
+		
+		<section class="text-center">
+			<div id="todo_list">
+				<div id="todo_div">
+					<div>TODO</div>
+					<div id="todo_items">
+						<div class="item" draggable=true>
+							<div class="main_todo_item">
+								<div class="textarea" contenteditable spellcheck="false"></div>
+								<div class="delete_item"></div>
+							</div>
+							<div class="sub_todo_item" draggable=true>
+								<div><input type="checkbox"></div>
+								<div class="textarea" contenteditable spellcheck="false">A</div>
+								<div class="delete_item"></div>
+							</div>
+							<div class="sub_todo_item" draggable=true>
+								<div><input type="checkbox"></div>
+								<div class="textarea" contenteditable spellcheck="false">B</div>
+								<div class="delete_item"></div>
+							</div>
+							<div class="sub_todo_item" draggable=true>
+								<div><input type="checkbox"></div>
+								<div class="textarea" contenteditable spellcheck="false">C</div>
+								<div class="delete_item"></div>
+							</div>
+							<div class="round_button add_sub_todo_item" onclick="addSubToDoItem()"></div>
+						</div>
+						
+						<div class="item" draggable=true>
+							<div class="main_todo_item">
+								<div class="textarea" contenteditable spellcheck="false"></div>
+								<div class="delete_item"></div>
+							</div>
+							<div class="sub_todo_item" draggable=true>
+								<div><input type="checkbox"></div>
+								<div class="textarea" contenteditable spellcheck="false">A</div>
+								<div class="delete_item"></div>
+							</div>
+							<div class="sub_todo_item" draggable=true>
+								<div><input type="checkbox"></div>
+								<div class="textarea" contenteditable spellcheck="false">B</div>
+								<div class="delete_item"></div>
+							</div>
+							<div class="sub_todo_item" draggable=true>
+								<div><input type="checkbox"></div>
+								<div class="textarea" contenteditable spellcheck="false">C</div>
+								<div class="delete_item"></div>
+							</div>
+							<div class="round_button add_sub_todo_item" onclick="addSubToDoItem()"></div>
+						</div>
+					</div>
+					<div>
+						<div class="round_button" id="add_main_todo_item" onclick="addMainToDoItem()"></div>
+					</div>
+				</div>
+				
+				<div id="working_div">
+					<div>WORKING</div>
+					<div id="working_items">
+						<div class="item" draggable=true>
+							<div class="main_working_item"></div>
+							<div class="sub_working_item"></div>
+							<div class="sub_working_item"></div>
+						</div>
+						
+						<div class="item" draggable=true>
+							<div class="main_working_item"></div>
+							<div class="sub_working_item"></div>
+							<div class="sub_working_item"></div>
+						</div>
+						<div class="round_button add_sub_working_item"></div>
+					</div>
+					<div>
+						<div class="round_button" id="add_main_working_item" onclick="addMainWorkingItem()"></div>
+					</div>
+					
+				</div>
+				
+				<div id="done_div">
+					<div>DONE</div>
+					
+					<div id="done_items">
+						<div class="item" draggable=true>
+							<div class="main_done_item"></div>
+							<div class="sub_done_item"></div>
+							<div class="sub_done_item"></div>
+						</div>
+						
+						<div class="item" draggable=true>
+							<div class="main_done_item"></div>
+							<div class="sub_done_item"></div>
+							<div class="sub_done_item"></div>
+							<div class="sub_done_item"></div>
+							<div class="sub_done_item"></div>
+							<div class="sub_done_item"></div>
+							<div class="sub_done_item"></div>
+						</div>
+						
+						<div class="item" draggable=true>
+							<div class="main_done_item"></div>
+							<div class="sub_done_item"></div>
+							<div class="sub_done_item"></div>
+						</div>
+						
+						<div class="item" draggable=true>
+							<div class="main_done_item"></div>
+							<div class="sub_done_item"></div>
+							<div class="sub_done_item"></div>
+						</div>
+						
+						<div class="item" draggable=true>
+							<div class="main_done_item"></div>
+							<div class="sub_done_item"></div>
+							<div class="sub_done_item"></div>
+						</div>
+						
+						<div class="item" draggable=true>
+							<div class="main_done_item"></div>
+							<div class="sub_done_item"></div>
+							<div class="sub_done_item"></div>
+						</div>
+						
+						<div class="item" draggable=true>
+							<div class="main_done_item"></div>
+							<div class="sub_done_item"></div>
+							<div class="sub_done_item"></div>
+						</div>
+						<div class="round_button add_sub_done_item"></div>
+					
+					<div id="add_items">
+						<div class="round_button" id="add_main_done_item" onclick="addMainDoneItem()"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<footer class="text-center"><div>Created By <a href="http://lohjc.github.io/">LOH JIA CHIEW</a></div></footer>
+		<script src="./testing_todo.js"></script>
+	</body>
+</html>

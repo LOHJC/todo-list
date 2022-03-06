@@ -1,0 +1,35 @@
+## TODO
+- Testing
+    - 2,Y
+    - 3,Y
+    - 4,N
+    - 1,N
+- Testing 2
+    - 1,N
+    - 3,N
+    - 2,Y
+
+## WORKING
+- New Working
+    - not done,N
+    - done,Y
+- New Working
+    - 1,N
+    - 3,N
+    - 1,N
+    - 2,Y
+
+## DONE
+- New Done
+    - new done,Y
+    - hello,Y
+    - e,Y
+    - d,Y
+    - a,Y
+    - c,Y
+- New Done
+    - 3,Y
+    - 1,Y
+    - 5,Y
+    - 4,N
+    - 2,N

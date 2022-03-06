@@ -3,12 +3,12 @@
     - need to make sure all the div are able to drop,N
     - make sure the color changes according to the div,N
     - might need to consider to mave the main items within its div (arrangement),N
-    - might need to considering making the sub items to be draggable too (maybe only limited to current main item only),N
+    - sub items can drag and drop within its main item,Y
 
 ## WORKING
-- Work on the file naming for new todo
-    - file name in webpage change to the filename in local file,Y
-    - check if it is possible to change the filename of localfile through the webpage,N
+- Drag for main item and sub items
+    - Make sure sub item can drop within its division,N
+    - Make sure the main item can drop to other div,N
 
 ## DONE
 - Developed a basic working todo list

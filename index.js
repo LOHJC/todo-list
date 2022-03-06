@@ -113,6 +113,7 @@ function gotoToDoHTML(filename, content)
 							let sub_item = document.createElement("div");
 							sub_item.classList.add("sub_todo_item");
 							sub_item.id = "sub_todo_item_"+todo_array[i].id+"_"+j;
+							sub_item.setAttribute("draggable", true);
 							let checkbox_div = document.createElement("div");
 							let checkbox_input = document.createElement("input");
 							let checkbox_tick =  todo_array[i].sub[j].split(",")[1];
@@ -178,6 +179,7 @@ function gotoToDoHTML(filename, content)
 							let sub_item = document.createElement("div");
 							sub_item.classList.add("sub_working_item");
 							sub_item.id = "sub_working_item_"+working_array[i].id+"_"+j;
+							sub_item.setAttribute("draggable", true);
 							let checkbox_div = document.createElement("div");
 							let checkbox_input = document.createElement("input");
 							let checkbox_tick =  working_array[i].sub[j].split(",")[1];
@@ -242,6 +244,7 @@ function gotoToDoHTML(filename, content)
 							let sub_item = document.createElement("div");
 							sub_item.classList.add("sub_done_item");
 							sub_item.id = "sub_done_item_" + done_array[i].id + "_" + j;
+							sub_item.setAttribute("draggable", true);
 							let checkbox_div = document.createElement("div");
 							let checkbox_input = document.createElement("input");
 							checkbox_input.onchange = () => {checkCheckbox(sub_item.id); contentChanged()}; //trigger content change for checkbox
@@ -281,6 +284,9 @@ function gotoToDoHTML(filename, content)
 					{
 						checkCheckbox(checkboxes[i].parentNode.parentNode.id);
 					}
+					
+					//enable drag and drop
+					enableDragAndDrop();
 				}
 			}
 		}
@@ -718,6 +724,7 @@ function addSubToDoItem(main_id)
 			let sub_item = document.createElement("div");
 			sub_item.classList.add("sub_todo_item");
 			sub_item.id = "sub_todo_item_" + current_todo_item.id + "_" + (current_todo_item.sub.length - 1);
+			sub_item.setAttribute("draggable", true);
 			let checkbox_div = document.createElement("div");
 			let checkbox_input = document.createElement("input");
 			checkbox_input.onchange = () => {checkCheckbox(sub_item.id); contentChanged()}; //trigger content change for checkbox
@@ -744,7 +751,7 @@ function addSubToDoItem(main_id)
 			parent_item.insertBefore(sub_item,add_sub_item_button);
 		}
 	}
-	
+	enableDragAndDrop();
 	contentChanged();
 }
 
@@ -768,6 +775,7 @@ function addSubWorkingItem(main_id)
 			let sub_item = document.createElement("div");
 			sub_item.classList.add("sub_working_item");
 			sub_item.id = "sub_working_item_" + current_working_item.id + "_" + (current_working_item.sub.length - 1);
+			sub_item.setAttribute("draggable", true);
 			let checkbox_div = document.createElement("div");
 			let checkbox_input = document.createElement("input");
 			checkbox_input.onchange = () => {checkCheckbox(sub_item.id); contentChanged()}; //trigger content change for checkbox
@@ -794,7 +802,7 @@ function addSubWorkingItem(main_id)
 			parent_item.insertBefore(sub_item,add_sub_item_button);
 		}
 	}
-	
+	enableDragAndDrop();
 	contentChanged();
 }
 
@@ -818,6 +826,7 @@ function addSubDoneItem(main_id)
 			let sub_item = document.createElement("div");
 			sub_item.classList.add("sub_done_item");
 			sub_item.id = "sub_done_item_" + current_done_item.id + "_" + (current_done_item.sub.length - 1);
+			sub_item.setAttribute("draggable", true);
 			let checkbox_div = document.createElement("div");
 			let checkbox_input = document.createElement("input");
 			checkbox_input.onchange = () => {checkCheckbox(sub_item.id); contentChanged()}; //trigger content change for checkbox
@@ -845,7 +854,7 @@ function addSubDoneItem(main_id)
 			checkCheckbox(sub_item.id);
 		}
 	}
-
+	enableDragAndDrop();
 	contentChanged();
 }
 
@@ -1009,7 +1018,7 @@ function deleteItem(id)
 //will be triggered by add, delete, content modified (checkbox and textarea)
 //update the contents before save file
 
-//TODO: update arrays
+//update arrays
 function updateArrays()
 {
 	//todo
@@ -1164,6 +1173,261 @@ function checkCheckbox(sub_item_id)
 		sub_item.getElementsByClassName("textarea")[0].style.textDecoration =  "none";
 }
 
+//TODO: sub item drag and drop
+
+
+//https://developer.mozilla.org/en-US/docs/Web/API/Document/drag_event
+function drag_start(e)
+{
+	saveFile();
+	item_dragged = this;
+	this.style.opacity = 0.3;
+}
+
+function drag(e)
+{
+	this.style.opacity = 0;
+}
+
+function drag_over(e)
+{
+	e.preventDefault();
+	this.style.opacity = 0.5;
+}
+
+function drag_leave(e)
+{
+	this.style.opacity = 1;
+}
+
+function drag_end(e)
+{
+	this.style.opacity = 1;
+	saveFile();
+}
+
+function sub_todo_drop(e)
+{
+	this.style.opacity = 1;
+	
+	//need to make sure both have same parent
+	if (this.parentNode == item_dragged.parentNode)
+	{
+		let parent_item = this.parentNode;
+		let parent_id = parent_item.id;
+		
+		//just change both places and id and position in Array
+		let drag_id = item_dragged.id;
+		let drop_id = this.id;
+		
+		let drag_main_id = drag_id.replace("sub_todo_item_","").substring(0, drag_id.replace("sub_todo_item_","").indexOf("_"));
+		let drop_main_id = drop_id.replace("sub_todo_item_","").substring(0, drop_id.replace("sub_todo_item_","").indexOf("_"));
+		
+		if (drag_main_id == drop_main_id)
+		{
+			for (let i=0; i < todo_array.length; i++)
+			{
+				if (todo_array[i].id == drag_main_id)
+				{
+					let drag_idx = drag_id.replace("sub_todo_item_","").substring(drag_id.replace("sub_todo_item_","").indexOf("_")+1, drag_id.length);
+					let drop_idx = drop_id.replace("sub_todo_item_","").substring(drop_id.replace("sub_todo_item_","").indexOf("_")+1, drop_id.length);
+					
+					//exchange list item
+					let temp = todo_array[i].sub[drag_idx];
+					todo_array[i].sub[drag_idx] = todo_array[i].sub[drop_idx];
+					todo_array[i].sub[drop_idx] = temp;
+					
+					//update sub item div
+					let drag_item = document.getElementById(drag_id);
+					let drop_item = document.getElementById(drop_id);
+					
+					let drag_checkbox = drag_item.getElementsByTagName("input")[0];
+					if (todo_array[i].sub[drag_idx].split(",")[1] == "Y")
+						drag_checkbox.checked = true;
+					else
+						drag_checkbox.checked = false;
+					checkCheckbox(drag_id);
+					drag_item.getElementsByClassName("textarea")[0].innerHTML = todo_array[i].sub[drag_idx].split(",")[0];
+					
+					let drop_checkbox = drop_item.getElementsByTagName("input")[0];
+					if (todo_array[i].sub[drop_idx].split(",")[1] == "Y")
+						drop_checkbox.checked = true;
+					else
+						drop_checkbox.checked = false;
+					checkCheckbox(drop_id);
+					drop_item.getElementsByClassName("textarea")[0].innerHTML = todo_array[i].sub[drop_idx].split(",")[0];
+					
+					break;
+				}
+			}
+		}
+	}
+}
+
+function sub_working_drop(e)
+{
+	this.style.opacity = 1;
+	
+	//need to make sure both have same parent
+	if (this.parentNode == item_dragged.parentNode)
+	{
+		let parent_item = this.parentNode;
+		let parent_id = parent_item.id;
+		
+		//just change both places and id and position in Array
+		let drag_id = item_dragged.id;
+		let drop_id = this.id;
+		
+		let drag_main_id = drag_id.replace("sub_working_item_","").substring(0, drag_id.replace("sub_working_item_","").indexOf("_"));
+		let drop_main_id = drop_id.replace("sub_working_item_","").substring(0, drop_id.replace("sub_working_item_","").indexOf("_"));
+		
+		if (drag_main_id == drop_main_id)
+		{
+			for (let i=0; i < working_array.length; i++)
+			{
+				if (working_array[i].id == drag_main_id)
+				{
+					let drag_idx = drag_id.replace("sub_working_item_","").substring(drag_id.replace("sub_working_item_","").indexOf("_")+1, drag_id.length);
+					let drop_idx = drop_id.replace("sub_working_item_","").substring(drop_id.replace("sub_working_item_","").indexOf("_")+1, drop_id.length);
+					
+					//exchange list item
+					let temp = working_array[i].sub[drag_idx];
+					working_array[i].sub[drag_idx] = working_array[i].sub[drop_idx];
+					working_array[i].sub[drop_idx] = temp;
+					
+					//update sub item div
+					let drag_item = document.getElementById(drag_id);
+					let drop_item = document.getElementById(drop_id);
+					
+					let drag_checkbox = drag_item.getElementsByTagName("input")[0];
+					if (working_array[i].sub[drag_idx].split(",")[1] == "Y")
+						drag_checkbox.checked = true;
+					else
+						drag_checkbox.checked = false;
+					checkCheckbox(drag_id);
+					drag_item.getElementsByClassName("textarea")[0].innerHTML = working_array[i].sub[drag_idx].split(",")[0];
+					
+					let drop_checkbox = drop_item.getElementsByTagName("input")[0];
+					if (working_array[i].sub[drop_idx].split(",")[1] == "Y")
+						drop_checkbox.checked = true;
+					else
+						drop_checkbox.checked = false;
+					checkCheckbox(drop_id);
+					drop_item.getElementsByClassName("textarea")[0].innerHTML = working_array[i].sub[drop_idx].split(",")[0];
+					
+					break;
+				}
+			}
+		}
+	}
+}
+
+function sub_done_drop(e)
+{
+	this.style.opacity = 1;
+	
+	//need to make sure both have same parent
+	if (this.parentNode == item_dragged.parentNode)
+	{
+		let parent_item = this.parentNode;
+		let parent_id = parent_item.id;
+		
+		//just change both places and id and position in Array
+		let drag_id = item_dragged.id;
+		let drop_id = this.id;
+		
+		let drag_main_id = drag_id.replace("sub_done_item_","").substring(0, drag_id.replace("sub_done_item_","").indexOf("_"));
+		let drop_main_id = drop_id.replace("sub_done_item_","").substring(0, drop_id.replace("sub_done_item_","").indexOf("_"));
+		
+		if (drag_main_id == drop_main_id)
+		{
+			for (let i=0; i < done_array.length; i++)
+			{
+				if (done_array[i].id == drag_main_id)
+				{
+					let drag_idx = drag_id.replace("sub_done_item_","").substring(drag_id.replace("sub_done_item_","").indexOf("_")+1, drag_id.length);
+					let drop_idx = drop_id.replace("sub_done_item_","").substring(drop_id.replace("sub_done_item_","").indexOf("_")+1, drop_id.length);
+					
+					//exchange list item
+					let temp = done_array[i].sub[drag_idx];
+					done_array[i].sub[drag_idx] = done_array[i].sub[drop_idx];
+					done_array[i].sub[drop_idx] = temp;
+					
+					//update sub item div
+					let drag_item = document.getElementById(drag_id);
+					let drop_item = document.getElementById(drop_id);
+					
+					let drag_checkbox = drag_item.getElementsByTagName("input")[0];
+					if (done_array[i].sub[drag_idx].split(",")[1] == "Y")
+						drag_checkbox.checked = true;
+					else
+						drag_checkbox.checked = false;
+					checkCheckbox(drag_id);
+					drag_item.getElementsByClassName("textarea")[0].innerHTML = done_array[i].sub[drag_idx].split(",")[0];
+					
+					let drop_checkbox = drop_item.getElementsByTagName("input")[0];
+					if (done_array[i].sub[drop_idx].split(",")[1] == "Y")
+						drop_checkbox.checked = true;
+					else
+						drop_checkbox.checked = false;
+					checkCheckbox(drop_id);
+					drop_item.getElementsByClassName("textarea")[0].innerHTML = done_array[i].sub[drop_idx].split(",")[0];
+					
+					break;
+				}
+			}
+		}
+	}
+}
+
+//add event listener for drag item
+let item_dragged;
+function enableDragAndDrop()
+{
+	//todo
+	let sub_items = document.getElementsByClassName("sub_todo_item");
+	for (let i=0; i < sub_items.length; i++)
+	{
+		let item = sub_items[i];
+		item.addEventListener("dragstart", drag_start);
+		item.addEventListener("drag", drag);
+		item.addEventListener("dragend", drag_end);
+		item.addEventListener("dragover", drag_over);
+		item.addEventListener("dragenter", drag_over);
+		item.addEventListener("dragleave", drag_leave);
+		item.addEventListener("drop", sub_todo_drop);
+	}
+
+	//working
+	sub_items = document.getElementsByClassName("sub_working_item");
+	for (let i=0; i < sub_items.length; i++)
+	{
+		let item = sub_items[i];
+		item.addEventListener("dragstart", drag_start);
+		item.addEventListener("drag", drag);
+		item.addEventListener("dragend", drag_end);
+		item.addEventListener("dragover", drag_over);
+		item.addEventListener("dragenter", drag_over);
+		item.addEventListener("dragleave", drag_leave);
+		item.addEventListener("drop", sub_working_drop);
+	}
+	
+	//done
+	sub_items = document.getElementsByClassName("sub_done_item");
+	for (let i=0; i < sub_items.length; i++)
+	{
+		let item = sub_items[i];
+		item.addEventListener("dragstart", drag_start);
+		item.addEventListener("drag", drag);
+		item.addEventListener("dragend", drag_end);
+		item.addEventListener("dragover", drag_over);
+		item.addEventListener("dragenter", drag_over);
+		item.addEventListener("dragleave", drag_leave);
+		item.addEventListener("drop", sub_done_drop);
+	}
+}
+
+
 //bind Ctrl+S to save file
 document.addEventListener("keydown", e => {
   if (e.ctrlKey && e.key === "s") {
@@ -1175,3 +1439,5 @@ document.addEventListener("keydown", e => {
 	catch (err) {}
   }
 });
+
+
