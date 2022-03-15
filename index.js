@@ -2,7 +2,7 @@
 
 //load all images 
 let img_idx = 0;
-let img_list = ["home.png","save.png", "delete.png", "dropdown.png", "pullup.png", "add.png", "not_saved.png", "saving.png", "done_saved.png"]
+let img_list = ["home.png","save.png", "delete.png", "dropdown.png", "pullup.png", "add.png", "not_saved.png", "saving.png", "done_saved.png", "move.png"]
 let img = new Image();
 img.src = img_list[img_idx];
 img.onload = () => {
@@ -20,7 +20,7 @@ let fileOptions = {
 		{
 			description: "TODOLOH",
 			accept: {
-				"text/markdown": [".tdl", ".md"]
+				"text/markdown": [".tdl"]
 			},
 			excludeAcceptAllOption: true,
 			multiple: false
@@ -79,7 +79,7 @@ function gotoToDoHTML(filename, content)
 				{
 					//set the file name
 					let todo_filename = document.getElementById("todo_filename")
-					todo_filename.innerHTML = filename.replace(".tdl","").replace(".md","");
+					todo_filename.innerHTML = filename.replace(".tdl","");
 					todo_filename.contentEditable = false;
 					
 					//todo
@@ -90,11 +90,14 @@ function gotoToDoHTML(filename, content)
 					{
 						let item = document.createElement("div");
 						item.classList.add("item");
-						item.setAttribute("draggable",true);
+						//item.setAttribute("draggable",true);
 						
 						let main_item = document.createElement("div");
 						main_item.classList.add("main_todo_item");
 						main_item.id = "main_todo_item_" + todo_array[i].id;
+						let move_icon = document.createElement("div");
+						move_icon.classList.add("move_icon");
+						move_icon.onmousedown = () => {moveItem(item);};						
 						let main_input = document.createElement("div");
 						main_input.classList.add("textarea");
 						main_input.contentEditable = true;
@@ -104,6 +107,7 @@ function gotoToDoHTML(filename, content)
 						let delete_icon = document.createElement("div");
 						delete_icon.classList.add("delete_item");
 						delete_icon.onclick = () => {deleteItem(main_item.id);}
+						main_item.appendChild(move_icon);
 						main_item.appendChild(main_input);
 						main_item.appendChild(delete_icon);
 						item.appendChild(main_item);
@@ -156,11 +160,14 @@ function gotoToDoHTML(filename, content)
 					{
 						let item = document.createElement("div");
 						item.classList.add("item");
-						item.setAttribute("draggable",true);
+						//item.setAttribute("draggable",true);
 						
 						let main_item = document.createElement("div");
 						main_item.classList.add("main_working_item");
 						main_item.id = "main_working_item_" + working_array[i].id;
+						let move_icon = document.createElement("div");
+						move_icon.classList.add("move_icon");
+						move_icon.onmousedown = () => {moveItem(item);};						
 						let main_input = document.createElement("div");
 						main_input.classList.add("textarea");
 						main_input.contentEditable = true;
@@ -170,6 +177,7 @@ function gotoToDoHTML(filename, content)
 						let delete_icon = document.createElement("div");
 						delete_icon.classList.add("delete_item");
 						delete_icon.onclick = () => {deleteItem(main_item.id);}
+						main_item.appendChild(move_icon);
 						main_item.appendChild(main_input);
 						main_item.appendChild(delete_icon);
 						item.appendChild(main_item);
@@ -221,11 +229,14 @@ function gotoToDoHTML(filename, content)
 					{
 						let item = document.createElement("div");
 						item.classList.add("item");
-						item.setAttribute("draggable",true);
+						//item.setAttribute("draggable",true);
 						
 						let main_item = document.createElement("div");
 						main_item.classList.add("main_done_item");
 						main_item.id = "main_done_item_" + done_array[i].id;
+						let move_icon = document.createElement("div");
+						move_icon.classList.add("move_icon");
+						move_icon.onmousedown = () => {moveItem(item);};						
 						let main_input = document.createElement("div");
 						main_input.classList.add("textarea");
 						main_input.contentEditable = true;
@@ -234,6 +245,7 @@ function gotoToDoHTML(filename, content)
 						main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
 						let delete_icon = document.createElement("div");
 						delete_icon.classList.add("delete_item");
+						main_item.appendChild(move_icon);
 						main_item.appendChild(main_input);
 						main_item.appendChild(delete_icon);
 						delete_icon.onclick = () => {deleteItem(main_item.id);}
@@ -336,13 +348,13 @@ async function saveFile()
 			{
 				description: "TODOLOH",
 				accept: {
-				  "text/markdown": [".tdl", ".md"],
+				  "text/markdown": [".tdl"],
 				},
 			  },
 			],
 		  };
 		file_handle = await window.showSaveFilePicker(options);
-		document.getElementById("todo_filename").innerHTML = file_handle.name.replace(".tdl","").replace(".md","")
+		document.getElementById("todo_filename").innerHTML = file_handle.name.replace(".tdl","");
 	}
 	
 	//write the content into file
@@ -600,11 +612,14 @@ function addMainToDoItem()
 	let items = document.getElementById("todo_items");
 	let item = document.createElement("div");
 	item.classList.add("item");
-	item.setAttribute("draggable",true);
+	//item.setAttribute("draggable",true);
 						
 	let main_item = document.createElement("div");
 	main_item.classList.add("main_todo_item");
-	main_item.id = "main_todo_item_" + new_item.id;
+	main_item.id = "main_todo_item_" + new_item.id;	
+	let move_icon = document.createElement("div");
+	move_icon.onmousedown = () => {moveItem(item);};
+	move_icon.classList.add("move_icon");
 	let main_input = document.createElement("div");
 	main_input.classList.add("textarea");
 	main_input.contentEditable = true;
@@ -618,6 +633,7 @@ function addMainToDoItem()
 	add_sub_item_button.classList.add("round_button");
 	add_sub_item_button.classList.add("add_sub_todo_item");
 	add_sub_item_button.onclick = () => {addSubToDoItem("main_todo_item_" + new_item.id)};
+	main_item.appendChild(move_icon);
 	main_item.appendChild(main_input);
 	main_item.appendChild(delete_icon);
 	item.appendChild(main_item);
@@ -637,11 +653,14 @@ function addMainWorkingItem()
 	let items = document.getElementById("working_items");
 	let item = document.createElement("div");
 	item.classList.add("item");
-	item.setAttribute("draggable",true);
+	//item.setAttribute("draggable",true);
 						
 	let main_item = document.createElement("div");
 	main_item.classList.add("main_working_item");
 	main_item.id = "main_working_item_" + new_item.id;
+	let move_icon = document.createElement("div");
+	move_icon.onmousedown = () => {moveItem(item);};
+	move_icon.classList.add("move_icon");
 	let main_input = document.createElement("div");
 	main_input.classList.add("textarea");
 	main_input.contentEditable = true;
@@ -655,6 +674,7 @@ function addMainWorkingItem()
 	add_sub_item_button.classList.add("round_button");
 	add_sub_item_button.classList.add("add_sub_working_item");
 	add_sub_item_button.onclick = () => {addSubWorkingItem("main_working_item_" + new_item.id)};
+	main_item.appendChild(move_icon);
 	main_item.appendChild(main_input);
 	main_item.appendChild(delete_icon);
 	item.appendChild(main_item);
@@ -674,11 +694,14 @@ function addMainDoneItem()
 	let items = document.getElementById("done_items");
 	let item = document.createElement("div");
 	item.classList.add("item");
-	item.setAttribute("draggable",true);
+	//item.setAttribute("draggable",true);
 						
 	let main_item = document.createElement("div");
 	main_item.classList.add("main_done_item");
 	main_item.id = "main_done_item_" + new_item.id;
+	let move_icon = document.createElement("div");
+	move_icon.onmousedown = () => {moveItem(item);};
+	move_icon.classList.add("move_icon");
 	let main_input = document.createElement("div");
 	main_input.classList.add("textarea");
 	main_input.contentEditable = true;
@@ -692,6 +715,7 @@ function addMainDoneItem()
 	add_sub_item_button.classList.add("round_button");
 	add_sub_item_button.classList.add("add_sub_done_item");
 	add_sub_item_button.onclick = () => {addSubDoneItem("main_done_item_" + new_item.id)};
+	main_item.appendChild(move_icon);
 	main_item.appendChild(main_input);
 	main_item.appendChild(delete_icon);
 	item.appendChild(main_item);
@@ -1013,7 +1037,14 @@ function deleteItem(id)
 	contentChanged();
 }
 
-//TODO: add reaction to checkbox and also to contenteditable, so data in item is updated
+// TODO: move main item
+function moveItem(item)
+{
+	item_dragged = item;
+	item.setAttribute("draggable", true)
+}
+
+//add reaction to checkbox and also to contenteditable, so data in item is updated
 //shows the content has been changed by changing the saving icon
 //will be triggered by add, delete, content modified (checkbox and textarea)
 //update the contents before save file
@@ -1173,37 +1204,68 @@ function checkCheckbox(sub_item_id)
 		sub_item.getElementsByClassName("textarea")[0].style.textDecoration =  "none";
 }
 
-//TODO: sub item drag and drop
-
-
+//sub item drag and drop
 //https://developer.mozilla.org/en-US/docs/Web/API/Document/drag_event
 function drag_start(e)
 {
-	saveFile();
 	item_dragged = this;
 	this.style.opacity = 0.3;
 }
 
 function drag(e)
 {
-	this.style.opacity = 0;
+	item_dragged.style.opacity = 0; //need to specify item_dragged instead of this as item and sub item using this
 }
 
 function drag_over(e)
 {
 	e.preventDefault();
-	this.style.opacity = 0.5;
+	if (item_dragged.className.includes("sub"))
+		this.style.opacity = 0.5;
+}
+
+
+function item_drag_over(e)
+{
+	e.preventDefault();
+	if (!item_dragged.className.includes("sub"))
+	{
+		this.style.opacity = 0.5;
+		this.style.backgroundColor = "white";
+	}
 }
 
 function drag_leave(e)
 {
-	this.style.opacity = 1;
+	if (item_dragged.className.includes("sub"))
+		this.style.opacity = 1;
 }
+
+function item_drag_leave(e)
+{
+	if (!item_dragged.className.includes("sub"))
+	{
+		this.style.opacity = 1;
+		this.style.backgroundColor = "transparent";	
+	}
+}
+
 
 function drag_end(e)
 {
 	this.style.opacity = 1;
 	saveFile();
+}
+
+//TODO: make sure it rearrange the item
+function item_drag_end(e)
+{
+	if (this.parentNode == item_dragged.parentNode && !item_dragged.className.includes("sub"))
+	{
+		this.style.opacity = 1;
+		this.style.backgroundColor = "transparent";
+		saveFile();
+	}
 }
 
 function sub_todo_drop(e)
@@ -1380,11 +1442,162 @@ function sub_done_drop(e)
 	}
 }
 
-//add event listener for drag item
+function item_drop(e)
+{	
+
+	this.style.opacity = 1;
+	this.style.backgroundColor = "transparent";
+	
+	//check if it is same parent
+	if (this.parentNode == item_dragged.parentNode && !item_dragged.className.includes("sub")) //same parent, change position
+	{
+		//just change both places and position in Array
+		//use the main_item in item to check the position
+		let item_type = "";
+		if(item_dragged.parentNode.id == "todo_items")
+			item_type = "todo";
+		else if (item_dragged.parentNode.id == "working_items")
+			item_type = "working";
+		else if (item_dragged.parentNode.id == "done_items")
+			item_type = "done";
+		
+		let drag_main = item_dragged.getElementsByClassName("main_"+item_type+"_item")[0]
+		let drop_main = this.getElementsByClassName("main_"+item_type+"_item")[0];
+		
+		let drag_id = drag_main.id.replace("main_"+item_type+"_item_","");
+		let drop_id = drop_main.id.replace("main_"+item_type+"_item_","");
+		
+		
+		//remove the previous one and drop a new one in front of the drop
+		let drag_y = item_dragged.getBoundingClientRect().top;
+		let drop_y = this.getBoundingClientRect().top;
+		if (drag_y > drop_y)
+			this.parentNode.insertBefore(item_dragged,this);
+		else
+			this.parentNode.insertBefore(this,item_dragged);
+		
+		let array = []
+		if (item_type == "todo")
+			array = todo_array;
+		else if (item_type == "working")
+			array = working_array;
+		else if (item_type == "done")
+			array = done_array;
+		
+		
+		let drag_item = "";
+		let drag_index = "";
+		let drop_item = "";
+		let drop_index = "";
+		for (let i=0; i<array.length; i++)
+		{
+			if (array[i].id == drag_id)
+			{
+				drag_index = i;
+				drag_item = array[i];
+			}
+			
+			if (array[i].id == drop_id)
+			{
+				drop_index = i;
+				drop_item = array[i];
+			}
+			
+			if (drag_item != "" && drop_item != "")
+			{
+				let temp = array[drop_index];
+				
+				array[drop_index] = array[drag_index];
+				array[drag_index] = temp;
+				break;
+			}
+		}
+	}
+	
+	item_dragged.setAttribute("draggable",false); //need to set it back to undraggable once done drop
+}
+
+
+//TODO: item drop in div, need to append the item
+function div_drop(e)
+{	
+	//make sure not same div
+	if (this.parentNode != item_dragged.parentNode.parentNode)
+	{
+		this.style.opacity = 1;
+		this.style.backgroundColor = "transparent";
+		
+		//get the dragged item type
+		let drag_item_type = item_dragged.parentNode.parentNode.id.replace("_div","");
+		
+		//get the drop div type 
+		let drop_item_type = this.parentNode.id.replace("_div","");
+		
+		//change the dragged item type to drop div type
+		let drag_main_item = item_dragged.getElementsByClassName("main_"+drag_item_type+"_item")[0];
+		drag_main_item.className = "main_"+drop_item_type+"_item";
+		let ori_main_id = drag_main_item.id.replace("main_"+drag_item_type+"_item","");
+		drag_main_item.id = "main_"+drop_item_type+"_item"+ori_main_id.substring(ori_main_id.indexOf("_"),drag_main_item.length);
+		
+		let drag_sub_items = item_dragged.getElementsByClassName("sub_"+drag_item_type+"_item");
+		while(drag_sub_items.length != 0)
+		{
+			let sub_item = drag_sub_items[0];
+			sub_item.className = "sub_"+drop_item_type+"_item";
+			let ori_sub_id = sub_item.id.replace("sub_"+drag_item_type+"_item","");
+			sub_item.id = "sub_"+drop_item_type+"_item"+ori_sub_id.substring(ori_sub_id.indexOf("_"),sub_item.length);
+		}
+		
+		let drag_add_button = item_dragged.getElementsByClassName("round_button")[0];
+		drag_add_button.classList.remove("add_sub_"+drag_item_type+"_item");
+		drag_add_button.classList.add("add_sub_"+drop_item_type+"_item");
+		
+		//remove the item from its ori div and move to drop div
+		item_dragged.parentNode.removeChild(item_dragged)
+		document.getElementById(drop_item_type+"_items").appendChild(item_dragged);
+		
+		//remove item from ori array and add into new array
+		let ori_array = []
+		let dest_array = []
+		if (drag_item_type == "todo")
+			ori_array = todo_array;
+		else if (drag_item_type == "working")
+			ori_array = working_array;
+		else if (drag_item_type == "done")
+			ori_array = done_array;
+		
+		if (drop_item_type == "todo")
+			dest_array = todo_array;
+		else if (drop_item_type == "working")
+			dest_array = working_array;
+		else if (drop_item_type == "done")
+			dest_array = done_array;
+		
+		let drag_main = item_dragged.getElementsByClassName("main_"+drop_item_type+"_item")[0]
+		
+		let drag_id = drag_main.id.replace("main_"+drop_item_type+"_item_","");
+		
+		for (let i=0; i < ori_array.length; i++)
+		{
+			let ori_item = ori_array[i];
+			if (ori_item.id == drag_id)
+			{
+				dest_array.push(ori_item);
+				ori_array.splice(i,1);
+				break;
+			}
+		}
+		
+		
+	}
+}
+
+
+//TODO: add event listener for drag item
 let item_dragged;
 function enableDragAndDrop()
 {
-	//todo
+	//todo subitems
 	let sub_items = document.getElementsByClassName("sub_todo_item");
 	for (let i=0; i < sub_items.length; i++)
 	{
@@ -1398,7 +1611,7 @@ function enableDragAndDrop()
 		item.addEventListener("drop", sub_todo_drop);
 	}
 
-	//working
+	//working subitems
 	sub_items = document.getElementsByClassName("sub_working_item");
 	for (let i=0; i < sub_items.length; i++)
 	{
@@ -1412,7 +1625,7 @@ function enableDragAndDrop()
 		item.addEventListener("drop", sub_working_drop);
 	}
 	
-	//done
+	//done subitems
 	sub_items = document.getElementsByClassName("sub_done_item");
 	for (let i=0; i < sub_items.length; i++)
 	{
@@ -1425,7 +1638,42 @@ function enableDragAndDrop()
 		item.addEventListener("dragleave", drag_leave);
 		item.addEventListener("drop", sub_done_drop);
 	}
+	
+	//TODO: all the main items (fix this, might need to add 1 more icon on the main)
+	
+	let items = document.getElementsByClassName("item");
+	for (let i=0; i < items.length; i++)
+	{
+		let item = items[i];
+		item.addEventListener("drag", drag);
+		item.addEventListener("dragend", item_drag_end);
+		item.addEventListener("dragover", item_drag_over);
+		item.addEventListener("dragenter", item_drag_over);
+		item.addEventListener("dragleave", item_drag_leave);
+		item.addEventListener("drop", item_drop);
+	}
+	
+	//items divs
+	let add_todo_button = document.getElementById("add_main_todo_item");
+	let add_working_button = document.getElementById("add_main_working_item");
+	let add_done_button = document.getElementById("add_main_done_item");
+	
+	let temp_items = [];
+	temp_items.push(add_todo_button);
+	temp_items.push(add_working_button);
+	temp_items.push(add_done_button);
+	for (let i=0; i < temp_items.length; i++)
+	{
+		let item = temp_items[i];
+		item.addEventListener("dragend", item_drag_end);
+		item.parentNode.addEventListener("dragover", item_drag_over);
+		item.parentNode.addEventListener("dragenter", item_drag_over);
+		item.parentNode.addEventListener("dragleave", item_drag_leave);
+		item.parentNode.addEventListener("drop", div_drop);
+	}
 }
+
+
 
 
 //bind Ctrl+S to save file

@@ -43,7 +43,7 @@ let fileOptions = {
 		{
 			description: "TODOLOH",
 			accept: {
-				"text/markdown": [".todoloh", ".md"]
+				"text/markdown": [".todoloh"]
 			},
 			excludeAcceptAllOption: true,
 			multiple: false
@@ -119,7 +119,7 @@ async function saveFile()
 			{
 				description: "TODOLOH",
 				accept: {
-				  "text/markdown": [".todoloh", ".md"],
+				  "text/markdown": [".todoloh"],
 				},
 			  },
 			],

@@ -61,14 +61,11 @@ html {
 		font-size: 2.5vh;
 	}
 	
-	.main_todo_item, .main_working_item, .main_done_item {
-		min-height: 3vh;
-		border-radius: 1vh;
-		padding: 1vh 0;
-		margin: 1vh 0;
+	.item {
+		border-radius: 2vh;
 	}
 	
-	.sub_todo_item, .sub_working_item, .sub_done_item {
+	.main_todo_item, .main_working_item, .main_done_item, .sub_todo_item, .sub_working_item, .sub_done_item {
 		min-height: 3vh;
 		border-radius: 1vh;
 		padding: 1vh 0;
@@ -84,7 +81,7 @@ html {
 		height: 4.5vh;
 	}
 	
-	.delete_item, #pulldrop{
+	.delete_item, .move_icon, #pulldrop{
 		height: 3vh;
 		width: 3vh;
 		background-size: 3vh 3vh;
@@ -96,8 +93,8 @@ html {
 		background-size: 4vh 4vh;
 	}
 	
-	::-webkit-scrollbar {
-		width: 1.5vh;
+	::-webkit-scrollbar, ::-webkit-scrollbar-track, ::-webkit-scrollbar-track-piece{
+		width: 1vh;
 	}
 	
 	::-webkit-scrollbar-thumb {
@@ -122,20 +119,17 @@ html {
 	
 	footer {
 		font-size: 2.5vw;
-	}	
-	
-	.main_todo_item, .main_working_item, .main_done_item {
-		min-height: 3vw;
-		border-radius: 1vw;
-		padding: 1vw 0;
-		margin: 1vw 0;
 	}
 	
-	.sub_todo_item, .sub_working_item, .sub_done_item {
+	.item {
+		border-radius: 2vw;
+	}
+	
+	.main_todo_item, .main_working_item, .main_done_item, .sub_todo_item, .sub_working_item, .sub_done_item {
 		min-height: 3vw;
 		border-radius: 1vw;
 		padding: 1vw 0;
-		margin: 1vw 0;
+		margin: 1vw ;
 	}
 	
 	.textarea {
@@ -147,7 +141,7 @@ html {
 		height: 4.5vw;
 	}
 	
-	.delete_item, #pulldrop {
+	.delete_item, .move_icon, #pulldrop {
 		height: 3vw;
 		width: 3vw;
 		background-size: 3vw 3vw;
@@ -159,9 +153,8 @@ html {
 		background-size: 4vw 4vw;
 	}
 	
-	::-webkit-scrollbar {
-		width: 1.5vw;
-		padding: 1.5vw 0;
+	::-webkit-scrollbar, ::-webkit-scrollbar-track, ::-webkit-scrollbar-track-piece{
+		width: 1vw;
 	}
 	
 	::-webkit-scrollbar-thumb {
@@ -319,7 +312,7 @@ button:hover {
 	width: 90%;
 	height: 100%;
 	display: grid;
-	grid-template-columns: 70% 10%;
+	grid-template-columns: 10% 70% 10%;
 	align-items: center;
 	justify-content: space-around;
 	font-weight: bold;
@@ -427,6 +420,19 @@ button:hover {
 .delete_item:hover {
 	opacity: 1;
 }
+
+.move_icon {
+	background-image: url("move.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0.5;
+	cursor: pointer;
+}
+
+.move_icon:hover {
+	opacity: 1;
+}
+
 
 #pulldrop {
 	height: 100%;

@@ -1,35 +1,37 @@
 ## TODO
+- New Todo
+- New Done
+    - new done,N
+    - hello,N
+    - e,N
+    - d,N
+    - a,Y
+    - c,N
 - Testing
-    - 2,Y
-    - 3,Y
+    - 2,N
     - 4,N
     - 1,N
-- Testing 2
-    - 1,N
-    - 3,N
-    - 2,Y
+- New Todo
 
 ## WORKING
 - New Working
-    - not done,N
-    - done,Y
-- New Working
-    - 1,N
     - 3,N
     - 1,N
-    - 2,Y
+    - 21,Y
+    - 2,N
+- Testing 2
+    - 1,N
+    - 3,N
+    - 2,N
+- New Done
+- New Working
 
 ## DONE
-- New Done
-    - new done,Y
-    - hello,Y
-    - e,Y
-    - d,Y
+- New Done 1
     - a,Y
+    - b,Y
     - c,Y
-- New Done
-    - 3,Y
-    - 1,Y
-    - 5,Y
-    - 4,N
-    - 2,N
+- New Done2
+- New Working
+    - not done,N
+    - done,Y
