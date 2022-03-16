@@ -1228,7 +1228,7 @@ function drag_over(e)
 function item_drag_over(e)
 {
 	e.preventDefault();
-	if (!item_dragged.className.includes("sub"))
+	if (this.parentNode == item_dragged.parentNode && !item_dragged.className.includes("sub"))
 	{
 		this.style.opacity = 0.5;
 		this.style.backgroundColor = "white";
