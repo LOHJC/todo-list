@@ -1,12 +1,5 @@
 ## TODO
 - New Todo
-- New Done
-    - new done,N
-    - hello,N
-    - e,N
-    - d,N
-    - a,Y
-    - c,N
 - Testing
     - 2,N
     - 4,N
@@ -35,3 +28,10 @@
 - New Working
     - not done,N
     - done,Y
+- New Done
+    - new done,N
+    - hello,N
+    - e,N
+    - d,N
+    - a,Y
+    - c,N
