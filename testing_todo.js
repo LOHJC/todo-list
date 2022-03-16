@@ -34,13 +34,13 @@ function sub_todo_drop(e)
 	this.style.opacity = 0.8;
 	
 	//check which item it is dropped
-	console.log("item_dragged:", item_dragged)
-	console.log("item_placed:",this)
+	//console.log("item_dragged:", item_dragged)
+	//console.log("item_placed:",this)
 	
 	//need to make sure both have same parent
 	if (this.parentNode == item_dragged.parentNode)
 	{
-		console.log("same parent");
+		//console.log("same parent");
 		let parent_item = this.parentNode;
 		let parent_id = parent_item.id;
 		
