@@ -58,6 +58,8 @@ function gotoToDoHTML(filename, content)
 		
 		if (filename && content)
 		{
+			document.title = filename.replace(".tdl","") + " | TODOLOH";
+			
 			//check if the uploaded file is normal todo list
 			let parts = content.split("\r\n\r\n")
 			if (parts.length == 3)
@@ -303,6 +305,11 @@ function gotoToDoHTML(filename, content)
 			}
 		}
 		
+		else //no filename and no contetn (create new file)
+		{
+			document.title = "UNTITLED" + " | TODOLOH";
+		}
+		
 		//bind save button
 		let save_file = document.getElementById("save_file");
 		if (save_file)
@@ -355,6 +362,7 @@ async function saveFile()
 		  };
 		file_handle = await window.showSaveFilePicker(options);
 		document.getElementById("todo_filename").innerHTML = file_handle.name.replace(".tdl","");
+		document.title = file_handle.name.replace(".tdl","") + " | TODOLOH";
 	}
 	
 	//write the content into file
