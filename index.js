@@ -28,6 +28,10 @@ let fileOptions = {
 	]
 };
 
+//observer
+let observer = new MutationObserver(contentChanged);
+const config = { attributes: true, childList: true, subtree: true };
+
 let ITEM_ID = 0;
 let todo_array = [];
 let working_array = [];
@@ -105,7 +109,8 @@ function gotoToDoHTML(filename, content)
 						main_input.contentEditable = true;
 						main_input.spellcheck = false;
 						main_input.innerHTML = todo_array[i].main;
-						main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+						//main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+						observer.observe(main_input,config);
 						let delete_icon = document.createElement("div");
 						delete_icon.classList.add("delete_item");
 						delete_icon.onclick = () => {deleteItem(main_item.id);}
@@ -134,7 +139,8 @@ function gotoToDoHTML(filename, content)
 							sub_input.classList.add("textarea");
 							sub_input.contentEditable = true;
 							sub_input.spellcheck = false;
-							sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+							//sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+							observer.observe(sub_input,config);
 							let sub_content = todo_array[i].sub[j].split(",")[0];
 							sub_input.innerHTML = sub_content;
 							let delete_icon = document.createElement("div");
@@ -175,7 +181,8 @@ function gotoToDoHTML(filename, content)
 						main_input.contentEditable = true;
 						main_input.spellcheck = false;
 						main_input.innerHTML = working_array[i].main;
-						main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+						//main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+						observer.observe(main_input,config);
 						let delete_icon = document.createElement("div");
 						delete_icon.classList.add("delete_item");
 						delete_icon.onclick = () => {deleteItem(main_item.id);}
@@ -205,7 +212,8 @@ function gotoToDoHTML(filename, content)
 							sub_input.contentEditable = true;
 							sub_input.spellcheck = false;
 							sub_input.innerHTML = working_array[i].sub[j].split(",")[0];
-							sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+							//sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+							observer.observe(sub_input,config);
 							let delete_icon = document.createElement("div");
 							delete_icon.classList.add("delete_item");
 							delete_icon.onclick = () => {deleteItem(sub_item.id)};
@@ -244,7 +252,8 @@ function gotoToDoHTML(filename, content)
 						main_input.contentEditable = true;
 						main_input.spellcheck = false;
 						main_input.innerHTML = done_array[i].main;
-						main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+						//main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+						observer.observe(main_input,config);
 						let delete_icon = document.createElement("div");
 						delete_icon.classList.add("delete_item");
 						main_item.appendChild(move_icon);
@@ -274,7 +283,8 @@ function gotoToDoHTML(filename, content)
 							sub_input.contentEditable = true;
 							sub_input.spellcheck = false;
 							sub_input.innerHTML = done_array[i].sub[j].split(",")[0];
-							sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+							//sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+							observer.observe(sub_input,config);
 							let delete_icon = document.createElement("div");
 							delete_icon.classList.add("delete_item");
 							delete_icon.onclick = () => {deleteItem(sub_item.id)};
@@ -298,9 +308,6 @@ function gotoToDoHTML(filename, content)
 					{
 						checkCheckbox(checkboxes[i].parentNode.parentNode.id);
 					}
-					
-					//enable drag and drop
-					enableDragAndDrop();
 				}
 			}
 		}
@@ -309,6 +316,9 @@ function gotoToDoHTML(filename, content)
 		{
 			document.title = "UNTITLED" + " | TODOLOH";
 		}
+					
+		//enable drag and drop
+		enableDragAndDrop();
 		
 		//bind save button
 		let save_file = document.getElementById("save_file");
@@ -360,9 +370,12 @@ async function saveFile()
 			  },
 			],
 		  };
-		file_handle = await window.showSaveFilePicker(options);
-		document.getElementById("todo_filename").innerHTML = file_handle.name.replace(".tdl","");
-		document.title = file_handle.name.replace(".tdl","") + " | TODOLOH";
+		try
+		{
+			file_handle = await window.showSaveFilePicker(options);
+			document.getElementById("todo_filename").innerHTML = file_handle.name.replace(".tdl","");
+			document.title = file_handle.name.replace(".tdl","") + " | TODOLOH";
+		} catch(err){return;}
 	}
 	
 	//write the content into file
@@ -633,7 +646,8 @@ function addMainToDoItem()
 	main_input.contentEditable = true;
 	main_input.spellcheck = false;
 	main_input.innerHTML = new_item.main;
-	main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+	//main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+	observer.observe(main_input,config);
 	let delete_icon = document.createElement("div");
 	delete_icon.classList.add("delete_item");
 	delete_icon.onclick = () => {deleteItem("main_todo_item_" + new_item.id)};
@@ -674,7 +688,8 @@ function addMainWorkingItem()
 	main_input.contentEditable = true;
 	main_input.spellcheck = false;
 	main_input.innerHTML = new_item.main;
-	main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+	//main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+	observer.observe(main_input,config);
 	let delete_icon = document.createElement("div");
 	delete_icon.classList.add("delete_item");
 	delete_icon.onclick = () => {deleteItem("main_working_item_" + new_item.id)};
@@ -715,7 +730,8 @@ function addMainDoneItem()
 	main_input.contentEditable = true;
 	main_input.spellcheck = false;
 	main_input.innerHTML = new_item.main;
-	main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+	//main_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+	observer.observe(main_input,config);
 	let delete_icon = document.createElement("div");
 	delete_icon.classList.add("delete_item");
 	delete_icon.onclick = () => {deleteItem("main_done_item_" + new_item.id)};
@@ -771,7 +787,8 @@ function addSubToDoItem(main_id)
 			sub_input.classList.add("textarea");
 			sub_input.contentEditable = true;
 			sub_input.spellcheck = false;
-			sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+			//sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+			observer.observe(sub_input,config);
 			let sub_content = current_todo_item.sub[current_todo_item.sub.length - 1].split(",")[0];
 			sub_input.innerHTML = sub_content;
 			let delete_icon = document.createElement("div");
@@ -822,7 +839,8 @@ function addSubWorkingItem(main_id)
 			sub_input.classList.add("textarea");
 			sub_input.contentEditable = true;
 			sub_input.spellcheck = false;
-			sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+			//sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+			observer.observe(sub_input,config);
 			let sub_content = current_working_item.sub[current_working_item.sub.length - 1].split(",")[0];
 			sub_input.innerHTML = sub_content;
 			let delete_icon = document.createElement("div");
@@ -873,7 +891,8 @@ function addSubDoneItem(main_id)
 			sub_input.classList.add("textarea");
 			sub_input.contentEditable = true;
 			sub_input.spellcheck = false;
-			sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+			//sub_input.addEventListener("DOMSubtreeModified", () => {contentChanged()}) //trigger content change for textarea
+			observer.observe(sub_input,config);
 			let sub_content = current_done_item.sub[current_done_item.sub.length - 1].split(",")[0];
 			sub_input.innerHTML = sub_content;
 			let delete_icon = document.createElement("div");
@@ -1584,6 +1603,13 @@ function div_drop(e)
 		let drag_main = item_dragged.getElementsByClassName("main_"+drop_item_type+"_item")[0]
 		
 		let drag_id = drag_main.id.replace("main_"+drop_item_type+"_item_","");
+		
+		if (drop_item_type == "todo")
+			drag_add_button.onclick = () => {addSubToDoItem("main_todo_item_" + drag_id)};
+		else if (drop_item_type == "working")
+			drag_add_button.onclick = () => {addSubWorkingItem("main_working_item_" + drag_id)};
+		else if (drop_item_type == "done")
+			drag_add_button.onclick = () => {addSubDoneItem("main_done_item_" + drag_id)};
 		
 		for (let i=0; i < ori_array.length; i++)
 		{
